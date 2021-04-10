@@ -1,6 +1,7 @@
 import { DsvDataSource, DsvFileUris } from "./DsvDataSource";
 import { RadarError } from "../Errors";
 import { JSONDataSource } from "./JSONDataSource";
+import { SingleDsvDataSource } from "./SingleDsvDataSource";
 
 type DsvDataSourceExample = {
   type: "dsv";
@@ -15,10 +16,17 @@ type JSONDataSourceExample = {
   fileUri: string;
 };
 
+type SingleDsvDataSourceExample = {
+  type: "singleDsv";
+  name: string;
+  separator: string;
+  fileUri: string;
+};
+
 export class Example {
   exampleIdx: number;
 
-  readonly EXAMPLES: (JSONDataSourceExample | DsvDataSourceExample)[] = [
+  readonly EXAMPLES: (JSONDataSourceExample | DsvDataSourceExample | SingleDsvDataSourceExample)[] = [
     {
       type: "json",
       name: "data validation example",
@@ -50,6 +58,13 @@ export class Example {
         items: "exampleData/Confidential/items.csv",
       },
     },
+
+    {
+      type: "singleDsv",
+      name: "",
+      separator: ",",
+      fileUri: "./exampleData/TW_TechRadar_Vol23.csv",
+    },
   ];
 
   constructor(exampleIdx: number) {
@@ -69,7 +84,9 @@ export class Example {
       case "dsv":
         return new DsvDataSource(example.fileUris);
         break;
-
+      case "singleDsv":
+        return new SingleDsvDataSource(example.fileUri);
+        break;
       default:
         throw new RadarError("Invalid example type for idx " + this.exampleIdx + " " + JSON.stringify(example));
     }
