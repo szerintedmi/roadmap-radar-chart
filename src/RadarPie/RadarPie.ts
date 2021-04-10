@@ -324,6 +324,7 @@ export class RadarPie extends D3Element {
       );
 
       subSliceGroup
+        .filter((d) => d.id !== slice.id) // subslice is "dummy", created during data import for a slice w/o subSlice
         .append("svg")
         .style("overflow", "visible")
         .attr("x", (subSlice) => subSlice.labelData.x)
@@ -365,7 +366,7 @@ export class RadarPie extends D3Element {
   static calculateAnchorPlacement(startOrMidAngle: number, endAngle?: number): TextPlacement {
     {
       let rads: number;
-      const H_CUT_OFF_DEGREE = 5;
+      const H_CUT_OFF_DEGREE = 10;
       const V_CUT_OFF_DEGREE = 45;
 
       if (!endAngle) rads = startOrMidAngle;

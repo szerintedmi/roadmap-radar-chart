@@ -5,19 +5,27 @@ import { InputDataValidationErrors, RadarError } from "../Errors";
 ///////////////////////////////////////////////////////////////////////////////
 export type ItemBase = { id: string; label?: string; description?: string };
 
-export type RadarItemInput = ItemBase & {
+type RadarItemInputWithSubSlice = ItemBase & {
   subSliceId: string;
   ringId: string;
   groupName: string;
 };
 
-type SubSliceInput = ItemBase;
-type RingInput = ItemBase;
-export type SliceInput = ItemBase & { subSlices: [SubSliceInput, ...SubSliceInput[]] };
+type RadarItemInputWithSlice = ItemBase & {
+  sliceId: string;
+  ringId: string;
+  groupName: string;
+};
+
+export type RadarItemInput = RadarItemInputWithSubSlice | RadarItemInputWithSlice;
+
+export type SubSliceInput = ItemBase;
+export type RingInput = ItemBase;
+export type SliceInput = ItemBase & { subSlices: SubSliceInput[] };
 
 export type RadarInput = {
-  slices: [SliceInput, ...SliceInput[]];
-  rings: [RingInput, ...RingInput[]];
+  slices: SliceInput[];
+  rings: RingInput[];
   items: RadarItemInput[];
 };
 
@@ -27,7 +35,7 @@ type Cleansable = SliceInput | SubSliceInput | RingInput | RadarItemInput;
 // RadarContent: processed from RadarInput. Radar will be built from this
 ///////////////////////////////////////////////////////////////////////////////
 
-export type RadarItemProcessed = RadarItemInput & { sliceId: string; ringLabel: string };
+export type RadarItemProcessed = RadarItemInputWithSubSlice & { sliceId: string; ringLabel: string };
 
 export type CatInfo = ItemBase & {
   itemCount: number;
@@ -85,45 +93,69 @@ export abstract class RadarDataSource {
 
   abstract fetchData(): Promise<RadarInput>;
 
-  setRadarContent(radarInput: RadarInput): this {
-    this.radarInput = radarInput;
+  setRadarContent(_radarInput: Readonly<RadarInput>): this {
+    this.radarInput = { ..._radarInput };
 
     // set description to empty string if missing + set id to label if id is missing or vica versa
-    radarInput.slices.forEach((slice) => {
+    this.radarInput.slices.forEach((slice) => {
       RadarDataSource.cleanse(slice);
       if (slice.subSlices && Array.isArray(slice.subSlices)) {
         slice.subSlices.forEach((subSlice) => RadarDataSource.cleanse(subSlice));
+        // we handle empty subSlices later
       }
     });
-    radarInput.rings.forEach((ring) => RadarDataSource.cleanse(ring));
-    radarInput.items.forEach((item) => RadarDataSource.cleanse(item));
+    this.radarInput.rings.forEach((ring) => RadarDataSource.cleanse(ring));
+    this.radarInput.items.forEach((item) => RadarDataSource.cleanse(item));
+
+    // add a dummy subSlice to slices for every slice without any subSlice
+    this.radarInput.slices
+      .filter((slice) => !slice.subSlices || !Array.isArray(slice.subSlices) || slice.subSlices.length === 0)
+      .forEach((sliceWithoutSubSlice) => {
+        sliceWithoutSubSlice.subSlices = [RadarDataSource.cleanse({ id: sliceWithoutSubSlice.id })];
+      });
+
+    // fill in slice id or subSliceId for every item
+    const radarItems: RadarItemProcessed[] = this.radarInput.items.map((inputItem) => {
+      let sliceId: string;
+      let subSliceId: string;
+      if ("subSliceId" in inputItem && inputItem.subSliceId) {
+        const slice = this.radarInput.slices.find((slice) =>
+          slice.subSlices.some((subSlice) => subSlice.id === inputItem.subSliceId)
+        );
+        if (slice) sliceId = slice.id; // validator will catch those without slice
+
+        subSliceId = inputItem.subSliceId;
+      } else if ("sliceId" in inputItem) {
+        // subSliceId is optional , use sliceId from item to refer to the dummy subslice created in slice
+        sliceId = inputItem.sliceId;
+        subSliceId = inputItem.sliceId;
+      } else {
+        // TODO: test if we need to throw here or it will be caught by validateRadarContent()
+      }
+
+      const ring = this.radarInput.rings.find((ring) => ring.id === inputItem.ringId);
+      const ringLabel = ring && ring.label ? ring.label : "";
+      return Object.assign({}, inputItem, { ringLabel, sliceId, subSliceId });
+    });
 
     // extract all subSlices from under slices input (slices.subSlices[]) & calculate itemCount for each subSlice
-    const subSlices = radarInput.slices
+    const subSlices = this.radarInput.slices
       .filter((slice) => Array.isArray(slice.subSlices))
       .map((slice) =>
         slice.subSlices.map((subSlice) =>
           Object.assign({}, subSlice, {
             sliceId: slice.id,
-            itemCount: radarInput.items.filter((rIt) => rIt.subSliceId === subSlice.id).length,
+            itemCount: radarItems.filter((rIt) => rIt.subSliceId === subSlice.id).length,
           })
         )
       )
       .reduce((a, b) => a.concat(b), []);
 
-    // fill in slice id for every item from InputData based on subSliceId
-    const radarItems: RadarItemProcessed[] = radarInput.items.map((inputItem) => {
-      const subSlice = subSlices.find((subSlice) => subSlice.id === inputItem.subSliceId);
-      const ring = radarInput.rings.find((ring) => ring.id === inputItem.ringId);
-      const ringLabel = ring && ring.label ? ring.label : "";
-      return Object.assign({}, inputItem, { ringLabel, sliceId: subSlice ? subSlice.sliceId : null });
-    });
-
     // populate slices: subSlices, segments and calculate itemCount for each slice
-    const slices: SliceProcessed[] = radarInput.slices.map((slice) => {
+    const slices: SliceProcessed[] = this.radarInput.slices.map((slice) => {
       const subSlices: SubSliceProcessed[] = Array.isArray(slice.subSlices)
         ? slice.subSlices.map((subSliceInput) => {
-            const segments: SegmentProcessed[] = radarInput.rings.map((ring, idx) => {
+            const segments: SegmentProcessed[] = this.radarInput.rings.map((ring, idx) => {
               const items: RadarItemProcessed[] = radarItems.filter(
                 (it) => it.subSliceId === subSliceInput.id && it.ringId == ring.id
               );
@@ -150,17 +182,17 @@ export abstract class RadarDataSource {
     });
 
     // calculate itemCount for each ring
-    const rings: CatInfo[] = radarInput.rings.map(
+    const rings: CatInfo[] = this.radarInput.rings.map(
       (ring): CatInfo =>
-        Object.assign({}, ring, { itemCount: radarInput.items.filter((rIt) => rIt.ringId === ring.id).length })
+        Object.assign({}, ring, { itemCount: this.radarInput.items.filter((rIt) => rIt.ringId === ring.id).length })
     );
 
     // extract unique group names and calculate itemCount for each
-    const _groups = [...new Set(radarInput.items.map((it) => it.groupName))];
+    const _groups = [...new Set(this.radarInput.items.map((it) => it.groupName))];
     const groups: CatInfo[] = _groups.map(
       (groupName, idx): CatInfo => ({
         id: groupName,
-        itemCount: radarInput.items.filter((rIt) => rIt.groupName === groupName).length,
+        itemCount: this.radarInput.items.filter((rIt) => rIt.groupName === groupName).length,
       })
     );
 
@@ -206,13 +238,21 @@ export abstract class RadarDataSource {
     );
 
     errors.push(...this.checkIfUnique(radarContent.slices).map((id) => "Non unique sliceId: " + id));
-    errors.push(...this.checkIfUnique(radarContent.subSlices).map((id) => "Non unique subSliceId: " + id));
+    errors.push(
+      ...this.checkIfUnique(radarContent.subSlices.filter((subSlice) => subSlice.id)).map(
+        (id) => "Non unique subSliceId: " + id
+      )
+    );
     errors.push(...this.checkIfUnique(radarContent.rings).map((id) => "Non unique ringId: " + id));
     errors.push(...this.checkIfUnique(radarContent.items).map((id) => "Non unique itemId: " + id));
 
     errors.push(
       ...radarContent.items.reduce((err, it) => {
-        if (radarContent.subSlices.findIndex((e) => e.id == it.subSliceId) < 0) {
+        if (radarContent.slices.findIndex((e) => e.id == it.sliceId) < 0) {
+          err.push("slice " + it.sliceId + " doesn't exist for itemId: " + it.id);
+        }
+
+        if (it.subSliceId && radarContent.subSlices.findIndex((e) => e.id == it.subSliceId) < 0) {
           err.push("subSlice doesn't exist for itemId: " + it.id);
         }
 
