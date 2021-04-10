@@ -9,7 +9,7 @@ A radar chart to generate an overview of your roadmap or tech radar.
 - Arranges your items (e.g. initatives or any item) on a Pie view:
   - high level grouping (e.g. your goals or any main category) => slices
   - optional sub grouping (eg. your outcomes) => subslices
-  - your timescale/ring (eg. Now/Next/Later or Q1/Q2/Q3/Q4, adopt ) => rings
+  - your timescale/ring classification (eg. Now/Next/Later, Q1/Q2/Q3/Q4, adopt/trial/asses/hold etc.) => rings
 - Generates tooltips for each item
 - Reads data from CSV or JSON. Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)
 - Highly customizable:
