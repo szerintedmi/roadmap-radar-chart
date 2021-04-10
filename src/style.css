@@ -39,7 +39,7 @@ body {
 
 .radar-tooltip {
   position: absolute;
-  width: 180px;
+  max-width: 45%;
   height: auto;
   padding: 2px;
   background: #dff9ff;
