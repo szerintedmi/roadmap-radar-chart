@@ -234,7 +234,7 @@ export function flattenSVGPath(
 
 export function distributePointsWithinBoundary(boundaryPolygonPoints: Point[], pointsCount: number) {
   const POINT_DENSITY = 0.8; // higher: points  more spread out. lower: points denser towards polygon center
-  const MAX_ITERATION_COUNT = 10; // give up if we can't enough points
+  const MAX_ITERATION_COUNT = 20; // give up if we can't enough points
 
   const points: Point[] = new Array(pointsCount);
 

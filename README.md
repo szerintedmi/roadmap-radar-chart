@@ -18,10 +18,6 @@ _Documentation is coming..._
 
 ## More Examples
 
-### Q1 / Q2 / Q3 / Q4
-
-_Coming..._
-
 ### Tooltips
 
 Tooltip layout is configurable in [style.css](src/stlye.css)
@@ -30,19 +26,15 @@ Tooltip layout is configurable in [style.css](src/stlye.css)
 
 ### Tech radar
 
+Thougtworks Technology Radar vol 23
+[Live view](https://radarchart.netlify.app/?ex=4)
+![Thougtworks Technology Radar vol 23](docs/exampleImages/TW_TechRadar_Vol23.png)
+
+ThoughtWorks' [original tech radar](https://www.thoughtworks.com/radar) layout is nicer but less generic (e.g fixed 4 slices and 4 rings, no sub-slices etc.).
+
+### Q1 / Q2 / Q3 / Q4
+
 _Coming..._
-
-## Layout customizations
-
-_Coming..._
-
-### Sub-slice arrangement
-
-### Sub-slice padding
-
-### Ring padding
-
-### Slice seperator line configuration
 
 ## Usage in your code
 

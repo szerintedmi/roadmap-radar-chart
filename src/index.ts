@@ -60,7 +60,13 @@ const svg = d3
 const example = new Example(urlParams.exampleId);
 const radarDs = example.getDataSource();
 
-const radarContainer = new RadarContainer(CONFIG);
+const config: RadarConfig = {
+  pie: { ...example.radarConfig.pie, ...CONFIG.pie },
+  legend: { ...example.radarConfig.legend, ...CONFIG.legend },
+  container: { ...example.radarConfig.container, ...CONFIG.container },
+};
+
+const radarContainer = new RadarContainer(config);
 
 radarContainer
   .fetchData(radarDs)
@@ -72,7 +78,7 @@ radarContainer
     let errorText: string;
 
     if (error instanceof InputDataValidationErrors) {
-      errorText = `${error.errors.length} input data validation errors while fetching ${example.getExampleName()}\n ${
+      errorText = `${error.errors.length} input data validation errors while fetching ${example.name}\n ${
         error.message
       }\n${error.errors.join("\n")}`;
     } else if (error instanceof DataImportError) {

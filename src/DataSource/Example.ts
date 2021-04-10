@@ -2,23 +2,27 @@ import { DsvDataSource, DsvFileUris } from "./DsvDataSource";
 import { RadarError } from "../Errors";
 import { JSONDataSource } from "./JSONDataSource";
 import { SingleDsvDataSource } from "./SingleDsvDataSource";
+import { RadarConfig } from "../RadarPie/RadarContainer";
 
-type DsvDataSourceExample = {
-  type: "dsv";
+type exmapleBase = {
+  type: "dsv" | "json" | "singleDsv";
   name: string;
+  radarConfig?: Partial<RadarConfig>;
+};
+
+type DsvDataSourceExample = exmapleBase & {
+  type: "dsv";
   separator: string;
   fileUris: DsvFileUris;
 };
 
-type JSONDataSourceExample = {
+type JSONDataSourceExample = exmapleBase & {
   type: "json";
-  name: string;
   fileUri: string;
 };
 
-type SingleDsvDataSourceExample = {
+type SingleDsvDataSourceExample = exmapleBase & {
   type: "singleDsv";
-  name: string;
   separator: string;
   fileUri: string;
 };
@@ -61,9 +65,23 @@ export class Example {
 
     {
       type: "singleDsv",
-      name: "",
+      name: "ThoughtWorks Technology Radar Vol 23",
       separator: ",",
       fileUri: "./exampleData/TW_TechRadar_Vol23.csv",
+
+      radarConfig: {
+        legend: { pos: { x: 400, y: 0 } },
+        pie: {
+          innerRadius: 5,
+          minSubSliceAngle: 360,
+          minRingRadius: 50,
+          ringPadding: 4,
+          sliceDividerOutFlowLength: -245,
+          sliceLabelPadding: 12,
+          subSlicePadAngle: 4,
+          itemMarker: { size: 80 },
+        },
+      },
     },
   ];
 
@@ -72,9 +90,14 @@ export class Example {
     this.exampleIdx = exampleIdx;
   }
 
-  public getExampleName(): string {
+  get name(): string {
     return this.EXAMPLES[this.exampleIdx].name;
   }
+
+  get radarConfig() {
+    return this.EXAMPLES[this.exampleIdx].radarConfig;
+  }
+
   getDataSource() {
     const example = this.EXAMPLES[this.exampleIdx];
 
