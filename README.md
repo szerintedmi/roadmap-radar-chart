@@ -6,35 +6,33 @@ A radar chart to generate an overview of your roadmap or tech radar.
 
 ![Now/Next/Later example](docs/exampleImages/NowNextLater1.png)
 
-- Arranges your high level grouping (e.g. your goals), sub grouping (eg. your outcomes) and your timescale (eg. Now/Next/Later or Q1/Q2/Q3/Q4) into a Pie chart
-- Distributes items (e.g. initiatives) on the generated Pie.
-- Generates tooltips
-- Data from CSV or JSON. Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira)
+- Arranges your items (e.g. initatives or any item) on a Pie view:
+  - high level grouping (e.g. your goals or any main category) => slices
+  - optional sub grouping (eg. your outcomes) => subslices
+  - your timescale/ring (eg. Now/Next/Later or Q1/Q2/Q3/Q4, adopt ) => rings
+- Generates tooltips for each item
+- Reads data from CSV or JSON. Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)
 - Highly customizable:
   - colors, fonts etc. via [style.css](src/stlye.css)
-  - layout and item markers via RadarConfig. See examples in [index.ts](src/index.ts)
-
-_Documentation is coming..._
+  - layout and item markers via RadarConfig. See examples below and in [index.ts](src/index.ts)
 
 ## More Examples
 
 ### Tooltips
 
-Tooltip layout is configurable in [style.css](src/stlye.css)
-
 <img src="docs/exampleImages/toolTipExample.png" alt="Tooltip example" width="300"/>
+
+Tooltip layout is configurable in [style.css](src/stlye.css)
 
 ### Tech radar
 
-Thougtworks Technology Radar vol 23
+ThougthWorks Technology Radar vol 23
+
 [Live view](https://radarchart.netlify.app/?ex=4)
+
 ![Thougtworks Technology Radar vol 23](docs/exampleImages/TW_TechRadar_Vol23.png)
 
 ThoughtWorks' [original tech radar](https://www.thoughtworks.com/radar) layout is nicer but less generic (e.g fixed 4 slices and 4 rings, no sub-slices etc.).
-
-### Q1 / Q2 / Q3 / Q4
-
-_Coming..._
 
 ## Usage in your code
 
@@ -49,7 +47,7 @@ const svg = d3
   .select("#myradar-div")
   .append("svg")
   .classed("radar-svg-container", true)
-  .attr("viewBox", `0 0 ${CONTAINER_WIDTH} ${CONTAINER_HEIGHT}`);
+  .attr("viewBox", `0 0 900 500`);
 
 //////////////////////////////////////////////////////////////////////////
 // Setup datasource - replace with your own
