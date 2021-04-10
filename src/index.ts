@@ -1,8 +1,6 @@
 import "./style.css";
 import * as d3 from "d3";
 
-import { RadarPieConfig } from "./RadarPie/RadarPie";
-import { ItemLegendConfig } from "./RadarPie/ItemLegend";
 import { DataImportError, InputDataValidationErrors } from "./Errors";
 import { Example } from "./DataSource/Example";
 import { RadarConfig, RadarContainer } from "./RadarPie/RadarContainer";

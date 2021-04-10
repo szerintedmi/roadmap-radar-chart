@@ -1,6 +1,4 @@
 import d3 = require("d3");
-import { ElementFlags } from "typescript";
-import { D3Element } from "../D3Element";
 import { RadarContentProcessed, RadarDataSource } from "../DataSource/RadarDataSource";
 import { RadarError } from "../Errors";
 import { arrangeLabels } from "./arrangeLabels";

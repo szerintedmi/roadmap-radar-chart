@@ -6,7 +6,6 @@
 //////////////
 
 import * as d3 from "d3";
-import { Force, SimulationNodeDatum } from "d3";
 
 type Rect = { x: number; y: number; width: number; height: number };
 
