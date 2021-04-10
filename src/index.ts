@@ -10,6 +10,8 @@ type RadarUrlParams = {
   exampleId: number;
 };
 
+const DEFAULT_EXAMPLE_ID = 2;
+
 const CONTAINER_WIDTH = 900;
 const CONTAINER_HEIGHT = 500;
 
@@ -92,7 +94,7 @@ function parseUrlParams(): RadarUrlParams {
   const urlParams = new URLSearchParams(queryString);
 
   let exampleId = parseInt(urlParams.get("ex"));
-  if (!exampleId || typeof exampleId !== "number") exampleId = 1;
+  if (!exampleId || typeof exampleId !== "number") exampleId = DEFAULT_EXAMPLE_ID;
 
   const debugUrlParam = urlParams.get("debug");
   let radarDebugMode = false;
