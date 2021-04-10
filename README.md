@@ -51,12 +51,7 @@ const svg = d3
 
 //////////////////////////////////////////////////////////////////////////
 // Setup datasource - replace with your own
-const radarDs = new DsvDataSource({
-  slices: "./exampleData/NowNextLater 1/NowNextLater 1 - slices.csv",
-  subSlices: "exampleData/NowNextLater 1/NowNextLater 1 - subSlices.csv",
-  rings: "exampleData/NowNextLater 1/NowNextLater 1 - rings.csv",
-  items: "exampleData/NowNextLater 1/NowNextLater 1 - items.csv",
-});
+const radarDs = new SingleDsvDataSource("./exampleData/TW_TechRadar_Vol23.csv");
 
 //////////////////////////////////////////////////////////////////////////
 // Creating the chart with defualt configs.
