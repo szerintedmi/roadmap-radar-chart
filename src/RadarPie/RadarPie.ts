@@ -260,7 +260,9 @@ export class RadarPie extends D3Element {
     const pieGroup = d3.create(this.namespace + "g").classed("radar-pie-group", true);
 
     ////////////////////////////////////////////////////////////////////////
-    //  add slices and slice labels
+    //  add top level groups first to maintain layer "painting" order  at one place
+    //    (so no need for.raise() & .lower()
+
     const sliceGroup = pieGroup
       .selectAll(".radar-slice-group")
       .data(this.radarContent.slices)
@@ -271,7 +273,19 @@ export class RadarPie extends D3Element {
           .attr("id", (slice) => "radar-slice-group-" + slice.id)
       );
 
+    const sliceSepGroup = pieGroup.append("g").classed("slice-separator-group", true);
+
+    const subSliceLabelGroup = pieGroup
+      .append("g")
+      .classed("labels-group", true)
+      .classed("subslice-labels-group", true);
+
     const sliceLabelGroup = pieGroup.append("g").classed("labels-group", true).classed("slice-labels-group", true);
+
+    const itemMarkersGroup = pieGroup.append("g").classed("item-makers-group", true);
+
+    ////////////////////////////////////////////////////////////////////////
+    //  add slices and slice labels
     sliceLabelGroup
       .selectAll(".slice-label")
       .data(this.radarContent.slices)
@@ -297,7 +311,6 @@ export class RadarPie extends D3Element {
 
     ////////////////////////////////////////////////////////////////////////
     //  add slice separator lines
-    const sliceSepGroup = pieGroup.append("g").classed("slice-separator-group", true);
     sliceSepGroup
       .selectAll(".slice-separator-group")
       .data(this.radarContent.slices)
@@ -312,53 +325,65 @@ export class RadarPie extends D3Element {
       );
 
     ////////////////////////////////////////////////////////////////////////
-    //  add subSlices and labels
+    //  add subSlices labels
+
+    // TODO: make subSlice node the same in radarContent.slices so it's not needed
+    const subSlices: SubSlice[] = this.radarContent.slices.reduce((acc, slice) => {
+      acc.push(...slice.subSlices);
+      return acc;
+    }, []);
+
+    subSliceLabelGroup
+      .selectAll("svg")
+      .data(subSlices.filter((d) => !d.isDummy)) // subslice is "dummy", created during data import for a slice w/o subSlice
+      .join((enter) =>
+        enter
+          .append("svg")
+          .style("overflow", "visible")
+          .attr("x", (subSlice) => subSlice.labelData.x)
+          .attr("y", (subSlice) => subSlice.labelData.y)
+          .classed("label", true)
+          .classed("subslice-label", true)
+
+          .append("text")
+          .attr("id", (subSlice) => "subslice-label-" + subSlice.id)
+          .classed("label-text", true)
+          .classed("subslice-label-text", true)
+          .text((subSlice) => subSlice.label)
+          .style("text-anchor", (subSlice) => subSlice.labelData.labelPlacement.hAnchor)
+          .style("dominant-baseline", (subSlice) => subSlice.labelData.labelPlacement.vAnchor)
+      );
+
     sliceGroup.each((slice, idx, nodes) => {
       const el = d3.select(nodes[idx]).selectAll(".radar-subslice-group");
       const subSliceGroup = el.data(slice.subSlices).join((enter) =>
         enter
           .append("g")
-          .classed("labels-group", true)
           .classed("radar-subslice-group", true)
           .attr("id", (subSlice) => "radar-subslice-group-" + slice.id + "-" + subSlice.id)
       );
 
-      subSliceGroup
-        .filter((d) => !d.isDummy) // subslice is "dummy", created during data import for a slice w/o subSlice
-        .append("svg")
-        .style("overflow", "visible")
-        .attr("x", (subSlice) => subSlice.labelData.x)
-        .attr("y", (subSlice) => subSlice.labelData.y)
-        .classed("label", true)
-        .classed("subslice-label", true)
-
-        .append("text")
-        .attr("id", (subSlice) => "subslice-label-" + subSlice.id)
-        .classed("label-text", true)
-        .classed("subslice-label-text", true)
-        .text((subSlice) => subSlice.label)
-        .style("text-anchor", (subSlice) => subSlice.labelData.labelPlacement.hAnchor)
-        .style("dominant-baseline", (subSlice) => subSlice.labelData.labelPlacement.vAnchor);
-
       ////////////////////////////////////////////////////////////////////////
-      //  add segments
+      //  add segments and item markers
       subSliceGroup.each((subSlice, idx, nodes) => {
         const el = d3.select(nodes[idx]).selectAll(".radar-segment-group");
-        const segmentGroup = el
-          .data(subSlice.segments)
-          .join((enter) =>
-            enter.append((segment) =>
-              new RadarSegment(segment, this.itemMarker, this.config, this.radarContent.rings.length)
-                .getElement()
-                .node()
-            )
-          );
+        const segmentGroup = el.data(subSlice.segments).join((enter) =>
+          enter.append((segment, sIdx) => {
+            // TODO: create RadarSegment objects at constructor (replace SegmentProcessed in radarContent )
+            const radarSegment = new RadarSegment(segment, this.config, this.radarContent.rings.length);
+
+            if (radarSegment.segment.items.length > 0) {
+              itemMarkersGroup
+                .append("g")
+                .classed("item-marker-group-" + idx + "-" + sIdx, true)
+                .append(() => this.itemMarker.getMultipleElements(radarSegment.segment.items).node());
+            }
+
+            return radarSegment.getElement().node();
+          })
+        );
       });
     });
-
-    pieGroup.selectAll(".radar-subslice-label").raise();
-
-    pieGroup.selectAll(".radar-item-markers-group").raise();
 
     return pieGroup;
   } // getElement end

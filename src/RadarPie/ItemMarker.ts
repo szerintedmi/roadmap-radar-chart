@@ -74,7 +74,8 @@ export class ItemMarker extends NameSpaced {
   }
 
   public getMultipleElements(items: RadarItem[]) {
-    const markersGroup = d3.create(this.namespace + "g").classed("radar-item-markers-group", true);
+    // TODO: this group is redundant is svg structure, remove it.
+    const markersGroup = d3.create(this.namespace + "g").classed("item-markers", true);
 
     const toolTipEl = d3.select("#myradar-tooltip");
 

@@ -28,15 +28,9 @@ export class RadarSegment extends D3Element {
   arcPathString: string;
   itemBoundaryPolygonPoints: Point[];
 
-  constructor(
-    segment: Readonly<Segment>,
-    itemMarker: Readonly<ItemMarker>,
-    pieConfig: Readonly<RadarPieConfig>,
-    ringCount: Readonly<number>
-  ) {
+  constructor(segment: Readonly<Segment>, pieConfig: Readonly<RadarPieConfig>, ringCount: Readonly<number>) {
     super();
     this.segment = segment;
-    this.itemMarker = itemMarker;
 
     this.opacity =
       ((pieConfig.ringMaxOpacity - pieConfig.ringMinOpacity) * (ringCount - this.segment.ringLevel - 1)) /
@@ -79,8 +73,6 @@ export class RadarSegment extends D3Element {
       .classed("radar-segment-arc", true)
       .attr("d", this.arcPathString)
       .attr("fill-opacity", this.opacity);
-
-    segmentGroup.append(() => this.itemMarker.getMultipleElements(this.segment.items).node());
 
     if (window.RADAR_DEBUG_MODE) segmentGroup.append(() => this.getDebugElement().node());
 
@@ -132,8 +124,7 @@ export class RadarSegment extends D3Element {
       .text(this.segment.items.length)
       .attr("font-size", "12px")
       .attr("transform", `translate(${this.arcCentroid[0]} ${this.arcCentroid[1]})`)
-      .style("text-anchor", "middle")
-      .raise();
+      .style("text-anchor", "middle");
 
     // Items boundary
     const itemBoundaryPolygonString = this.itemBoundaryPolygonPoints.map((d) => d.join(",")).join(" ");
