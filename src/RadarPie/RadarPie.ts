@@ -324,7 +324,7 @@ export class RadarPie extends D3Element {
       );
 
       subSliceGroup
-        .filter((d) => d.id !== slice.id) // subslice is "dummy", created during data import for a slice w/o subSlice
+        .filter((d) => !d.isDummy) // subslice is "dummy", created during data import for a slice w/o subSlice
         .append("svg")
         .style("overflow", "visible")
         .attr("x", (subSlice) => subSlice.labelData.x)

@@ -42,7 +42,7 @@ export type CatInfo = ItemBase & {
 };
 
 export type SegmentProcessed = { ringId: string; ringLevel: number; items: RadarItemProcessed[] };
-export type SubSliceProcessed = ItemBase & { segments: SegmentProcessed[] };
+export type SubSliceProcessed = ItemBase & { sliceId: string; isDummy: boolean; segments: SegmentProcessed[] };
 
 export type SliceProcessed = CatInfo & { subSlices: SubSliceProcessed[] };
 export type CatInfoSubSlice = CatInfo & { sliceId: string };
@@ -169,7 +169,11 @@ export abstract class RadarDataSource {
               return segment;
             });
 
-            const subSlice: SubSliceProcessed = Object.assign({}, subSliceInput, { segments });
+            const subSlice: SubSliceProcessed = Object.assign({}, subSliceInput, {
+              sliceId: slice.id,
+              isDummy: slice.id === subSliceInput.id, // TODO: do it nicer, mark it when we create the dummy subslice
+              segments,
+            });
 
             return subSlice;
           })
