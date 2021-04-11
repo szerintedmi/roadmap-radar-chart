@@ -180,8 +180,7 @@ export class RadarPie extends D3Element {
 
     const subSliceArcs = (subSliceGen(
       (this.radarContent.subSlices as unknown) as number[]
-      // (this.radarContent.subSlices as unknown) as number[] // we are passing CatInfoSubSlice[], it seems to be a @types/d3 issue
-    ) as unknown) as SubSliceArcData[];
+    ) as unknown) as SubSliceArcData[]; // we are passing CatInfoSubSlice[], it seems to be a @types/d3 issue
 
     subSliceArcs.forEach((arc) => {
       arc.innerRadius = this.config.innerRadius;

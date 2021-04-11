@@ -1,4 +1,4 @@
-import d3 = require("d3");
+import * as d3 from "d3";
 import { RadarContentProcessed, RadarDataSource } from "../DataSource/RadarDataSource";
 import { RadarError } from "../Errors";
 import { arrangeLabels } from "./arrangeLabels";
