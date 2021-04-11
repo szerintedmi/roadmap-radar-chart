@@ -42,7 +42,6 @@ For more details (eg. `RadarConfig` tips, error handling etc.) see [index.ts](sr
 ```ts
 import "./style.css";
 import * as d3 from "d3";
-import { DataImportError, InputDataValidationErrors } from "./Errors";
 
 const svg = d3
   .select("#myradar-div")
