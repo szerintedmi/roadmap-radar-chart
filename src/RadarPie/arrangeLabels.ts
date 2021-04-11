@@ -133,7 +133,7 @@ export function arrangeLabels(
     });
 
     const simNodes = [...bBoxes, ...labelAnchorPoints];
-    console.log("simNodes", simNodes);
+
     const simLinks = bBoxes.map((node, idx) => ({ source: idx, target: idx + bBoxes.length }));
 
     const simulation = d3
