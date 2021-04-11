@@ -8,7 +8,7 @@ import { D3Element } from "../D3Element";
 
 import { distributePointsWithinBoundary, flattenSVGPath, Point } from "../geometricUtils";
 import { ItemMarker } from "./ItemMarker";
-import { RadarPieConfig, Segment } from "./RadarPie";
+import { RadarPieConfig, RingInfo, Segment } from "./RadarPie";
 
 const SYMBOL_BOUND_RADIUS = 6;
 const PADDING_ANGLE = (2 * Math.PI) / 180;
@@ -28,14 +28,11 @@ export class RadarSegment extends D3Element {
   arcPathString: string;
   itemBoundaryPolygonPoints: Point[];
 
-  constructor(segment: Readonly<Segment>, pieConfig: Readonly<RadarPieConfig>, ringCount: Readonly<number>) {
+  constructor(segment: Readonly<Segment>, rings: Readonly<RingInfo[]>) {
     super();
     this.segment = segment;
 
-    this.opacity =
-      ((pieConfig.ringMaxOpacity - pieConfig.ringMinOpacity) * (ringCount - this.segment.ringLevel - 1)) /
-        (ringCount - 1) +
-      pieConfig.ringMinOpacity;
+    this.opacity = rings[this.segment.ringLevel].opacity;
 
     const arcGenerator = d3.arc();
     this.arcPathString = arcGenerator(this.segment.arcParams);

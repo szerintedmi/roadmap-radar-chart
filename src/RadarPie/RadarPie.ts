@@ -116,6 +116,7 @@ export interface Slice extends SliceProcessed {
 }
 
 export interface RingInfo extends CatInfo {
+  opacity?: number;
   radius?: number;
 }
 
@@ -146,7 +147,7 @@ export class RadarPie extends D3Element {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Calculate radius for each ring
+    // Calculate radius and opacity for each ring
     const availableRadius =
       this.config.outerRadius -
       this.config.innerRadius -
@@ -161,6 +162,10 @@ export class RadarPie extends D3Element {
     );
 
     this.radarContent.rings.forEach((ring, idx) => {
+      ring.opacity =
+        ((this.config.ringMaxOpacity - this.config.ringMinOpacity) * (this.radarContent.rings.length - idx - 1)) /
+          (this.radarContent.rings.length - 1) +
+        this.config.ringMinOpacity;
       ring.radius = scaledRadiuses[idx];
     });
 
@@ -369,7 +374,7 @@ export class RadarPie extends D3Element {
         const segmentGroup = el.data(subSlice.segments).join((enter) =>
           enter.append((segment, sIdx) => {
             // TODO: create RadarSegment objects at constructor (replace SegmentProcessed in radarContent )
-            const radarSegment = new RadarSegment(segment, this.config, this.radarContent.rings.length);
+            const radarSegment = new RadarSegment(segment, this.radarContent.rings);
 
             if (radarSegment.segment.items.length > 0) {
               itemMarkersGroup
