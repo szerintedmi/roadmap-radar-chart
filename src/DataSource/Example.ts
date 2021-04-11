@@ -78,7 +78,7 @@ export class Example {
           ringPadding: 4,
           sliceDividerOutFlowLength: -245,
           sliceLabelPadding: 12,
-          subSlicePadAngle: 4,
+          subSlicePadAngle: 2,
           itemMarker: { size: 80 },
         },
       },
