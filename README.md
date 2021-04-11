@@ -6,12 +6,12 @@ A radar chart to generate an overview of your roadmap or tech radar.
 
 ![Now/Next/Later example](docs/exampleImages/NowNextLater1.png)
 
-- Arranges your items (e.g. initatives or any item) on a Pie view:
-  - high level grouping (e.g. your goals or any main category) => slices
-  - optional sub grouping (eg. your outcomes) => subslices
+- Arranges your items (e.g. initatives) on a Pie view:
+  - high level grouping (e.g. goals) => slices
+  - optional sub grouping (eg. outcomes) => subslices
   - your timescale/ring classification (eg. Now/Next/Later, Q1/Q2/Q3/Q4, adopt/trial/asses/hold etc.) => rings
 - Generates tooltips for each item
-- Reads data from CSV or JSON. Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)
+- Reads data from CSV or JSON. _Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)_
 - Highly customizable:
   - colors, fonts etc. via [style.css](src/stlye.css)
   - layout and item markers via RadarConfig. See examples below and in [index.ts](src/index.ts)
@@ -32,7 +32,8 @@ ThougthWorks Technology Radar vol 23
 
 ![Thougtworks Technology Radar vol 23](docs/exampleImages/TW_TechRadar_Vol23.png)
 
-ThoughtWorks' [original tech radar](https://www.thoughtworks.com/radar) layout is nicer but less generic (e.g fixed 4 slices and 4 rings, no sub-slices etc.).
+ThoughtWorks' [original tech radar](https://www.thoughtworks.com/radar) layout is better for this use case but
+less generic (e.g fixed 4 slices and 4 rings, no sub-slices etc.).
 
 ## Usage in your code
 
