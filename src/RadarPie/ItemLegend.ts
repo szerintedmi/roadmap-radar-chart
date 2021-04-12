@@ -62,7 +62,7 @@ export class ItemLegend extends D3Element {
       .enter()
       .append("text")
       .text((d) => d.id)
-      .classed("item-legend-item-texts", true)
+      .classed("item-legend-item-text", true)
       .attr("x", this.config.itemSpacing)
       .attr("y", (d, i) => i * this.config.itemSpacing + this.config.itemSpacing / 2)
       .attr("text-anchor", "left")
