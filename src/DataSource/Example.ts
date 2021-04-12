@@ -3,11 +3,12 @@ import { RadarError } from "../Errors";
 import { JSONDataSource } from "./JSONDataSource";
 import { SingleDsvDataSource } from "./SingleDsvDataSource";
 import { RadarConfig } from "../RadarPie/RadarContainer";
+import { RecursivePartial } from "../utils";
 
 type exmapleBase = {
   type: "dsv" | "json" | "singleDsv";
   name: string;
-  radarConfig?: Partial<RadarConfig>;
+  radarConfig?: RecursivePartial<RadarConfig>;
 };
 
 type DsvDataSourceExample = exmapleBase & {

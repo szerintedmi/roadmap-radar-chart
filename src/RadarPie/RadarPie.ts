@@ -13,6 +13,7 @@ import {
 
 import { RadarSegment } from "./RadarSegment";
 import { degToRad } from "../geometricUtils";
+import { nestedAssign, RecursivePartial } from "../utils";
 
 export type RadarPieConfig = {
   outerRadius: number;
@@ -134,10 +135,10 @@ export class RadarPie extends D3Element {
   config: RadarPieConfig;
   itemMarker: ItemMarker;
 
-  constructor(radarContentInput: Readonly<RadarContentProcessed>, config?: Readonly<Partial<RadarPieConfig>>) {
+  constructor(radarContentInput: Readonly<RadarContentProcessed>, config?: Readonly<RecursivePartial<RadarPieConfig>>) {
     super();
     this.radarContent = radarContentInput;
-    this.config = Object.assign({}, DEFAULT_RADAR_PIE_CONFIG, config);
+    this.config = nestedAssign(DEFAULT_RADAR_PIE_CONFIG, config);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Create itemMarker
@@ -167,11 +168,11 @@ export class RadarPie extends D3Element {
         ((this.config.ringMaxOpacity - this.config.ringMinOpacity) * (this.radarContent.rings.length - ringLevel - 1)) /
           (this.radarContent.rings.length - 1) +
         this.config.ringMinOpacity;
-      
+
       ring.innerRadius =
         this.config.innerRadius +
         d3.sum(this.radarContent.rings, (r, idx) => (idx < ringLevel ? r.radius + this.config.ringPadding : 0));
-      
+
       ring.radius = scaledRadiuses[ringLevel];
     });
 

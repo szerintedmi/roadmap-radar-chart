@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { NameSpaced } from "../D3Element";
 import { CatInfo } from "../DataSource/RadarDataSource";
+import { nestedAssign } from "../utils";
 import { RadarItem } from "./RadarPie";
 
 export type ItemMarkerConfig = {
@@ -37,7 +38,10 @@ export class ItemMarker extends NameSpaced {
   constructor(groups: CatInfo[], config?: Partial<ItemMarkerConfig>) {
     super();
     this.groups = groups;
-    this.config = Object.assign({}, DEFAULT_ITEM_MARKER_CONFIG, config);
+    console.log(" config", config);
+    console.log(" DEFAULT_ITEM_MARKER_CONFIG", DEFAULT_ITEM_MARKER_CONFIG);
+    this.config = nestedAssign(DEFAULT_ITEM_MARKER_CONFIG, config);
+    console.log(" this.config", this.config);
 
     this.symbol = d3.symbol().type(this.config.symbolType).size(this.config.size);
 

@@ -4,6 +4,7 @@ import * as d3 from "d3";
 import { DataImportError, InputDataValidationErrors } from "./Errors";
 import { Example } from "./DataSource/Example";
 import { RadarConfig, RadarContainer } from "./RadarPie/RadarContainer";
+import { nestedAssign, RecursivePartial } from "./utils";
 
 type RadarUrlParams = {
   radarDebugMode: boolean;
@@ -15,11 +16,11 @@ const DEFAULT_EXAMPLE_ID = 2;
 const CONTAINER_WIDTH = 900;
 const CONTAINER_HEIGHT = 500;
 
-const CONFIG: Partial<RadarConfig> = {
+const CONFIG: RecursivePartial<RadarConfig> = {
   // most formats can be adjusted in style.css
   // There are sensible defaults for the rest but you can customize it to your needs:
   container: {
-    /////// for more padding withing the SVG container
+    /////// for more padding within the SVG container
     // padding: 100,
   },
   pie: {
@@ -60,12 +61,7 @@ const svg = d3
 const example = new Example(urlParams.exampleId);
 const radarDs = example.getDataSource();
 
-const config: RadarConfig = {
-  pie: { ...(example.radarConfig ? example.radarConfig.pie : {}), ...CONFIG.pie },
-  itemLegend: { ...(example.radarConfig ? example.radarConfig.itemLegend : {}), ...CONFIG.itemLegend },
-  ringLegend: { ...(example.radarConfig ? example.radarConfig.ringLegend : {}), ...CONFIG.ringLegend },
-  container: { ...(example.radarConfig ? example.radarConfig.container : {}), ...CONFIG.container },
-};
+const config: RecursivePartial<RadarConfig> = nestedAssign(example.radarConfig, CONFIG);
 
 const radarContainer = new RadarContainer(config);
 

@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { RadarContentProcessed, RadarDataSource } from "../DataSource/RadarDataSource";
 import { RadarError } from "../Errors";
+import { nestedAssign, RecursivePartial } from "../utils";
 import { arrangeLabels } from "./arrangeLabels";
 import { ItemLegend, ItemLegendConfig } from "./ItemLegend";
 import { RadarPie, RadarPieConfig } from "./RadarPie";
@@ -15,10 +16,10 @@ export type ContainerConfig = {
 };
 
 export type RadarConfig = {
-  container: Partial<ContainerConfig>;
-  pie: Partial<RadarPieConfig>;
-  itemLegend: Partial<ItemLegendConfig>;
-  ringLegend: Partial<RingLegendConfig>;
+  container: RecursivePartial<ContainerConfig>;
+  pie: RecursivePartial<RadarPieConfig>;
+  itemLegend: RecursivePartial<ItemLegendConfig>;
+  ringLegend: RecursivePartial<RingLegendConfig>;
 };
 
 export const DEFAULT_CONTAINER_CONFIG: ContainerConfig = {
@@ -29,7 +30,7 @@ export const DEFAULT_CONTAINER_CONFIG: ContainerConfig = {
 };
 
 export class RadarContainer {
-  config: Partial<RadarConfig>;
+  config: RecursivePartial<RadarConfig>;
 
   radarPie: RadarPie;
   itemLegend: ItemLegend;
@@ -38,10 +39,10 @@ export class RadarContainer {
   datasource: RadarDataSource;
   radarContent: RadarContentProcessed;
 
-  constructor(config?: Partial<RadarConfig>) {
+  constructor(config?: RecursivePartial<RadarConfig>) {
     this.config = config;
 
-    this.config.container = Object.assign({}, DEFAULT_CONTAINER_CONFIG, this.config.container);
+    this.config.container = nestedAssign(DEFAULT_CONTAINER_CONFIG, this.config.container);
 
     const defaultItemLegend: Partial<ItemLegendConfig> = {
       pos: {
@@ -49,7 +50,7 @@ export class RadarContainer {
         y: 30,
       },
     };
-    this.config.itemLegend = Object.assign({}, defaultItemLegend, this.config.itemLegend);
+    this.config.itemLegend = nestedAssign(defaultItemLegend, this.config.itemLegend);
 
     const defaultRingLegend: Partial<RingLegendConfig> = {
       pos: {
@@ -57,7 +58,7 @@ export class RadarContainer {
         y: 0,
       },
     };
-    this.config.ringLegend = Object.assign({}, defaultRingLegend, this.config.ringLegend);
+    this.config.ringLegend = nestedAssign(defaultRingLegend, this.config.ringLegend);
   }
 
   public async fetchData(datasource: RadarDataSource) {

@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { ItemMarker } from "./ItemMarker";
 import { CatInfo } from "../DataSource/RadarDataSource";
 import { D3Element } from "../D3Element";
+import { nestedAssign, RecursivePartial } from "../utils";
 
 export type ItemLegendConfig = {
   pos: {
@@ -27,11 +28,11 @@ export class ItemLegend extends D3Element {
   itemMarker: ItemMarker;
   config: ItemLegendConfig;
 
-  constructor(groups: CatInfo[], itemMarker: ItemMarker, config?: Partial<ItemLegendConfig>) {
+  constructor(groups: CatInfo[], itemMarker: ItemMarker, config?: RecursivePartial<ItemLegendConfig>) {
     super();
     this.groups = groups;
     this.itemMarker = itemMarker;
-    this.config = Object.assign({}, DEFAULT_ITEM_LEGEND_CONFIG, config);
+    this.config = nestedAssign(DEFAULT_ITEM_LEGEND_CONFIG, config);
   }
 
   public getElement() {

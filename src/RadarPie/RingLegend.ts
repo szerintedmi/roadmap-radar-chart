@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { D3Element } from "../D3Element";
 import { degToRad } from "../geometricUtils";
+import { nestedAssign, RecursivePartial } from "../utils";
 import { RingInfo } from "./RadarPie";
 
 export type RingLegendConfig = {
@@ -29,10 +30,10 @@ export class RingLegend extends D3Element {
   arcs: d3.DefaultArcObject[];
   arcGenerator: d3.Arc<any, d3.DefaultArcObject>;
 
-  constructor(rings: RingInfo[], config?: Partial<RingLegendConfig>) {
+  constructor(rings: RingInfo[], config?: RecursivePartial<RingLegendConfig>) {
     super();
     this.rings = rings;
-    this.config = Object.assign({}, DEFAULT_RING_LEGEND_CONFIG, config);
+    this.config = nestedAssign(DEFAULT_RING_LEGEND_CONFIG, config);
 
     this.arcGenerator = d3.arc();
 
