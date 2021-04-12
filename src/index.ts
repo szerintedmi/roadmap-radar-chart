@@ -37,7 +37,7 @@ const CONFIG: Partial<RadarConfig> = {
     // sliceLabelPadding: 8,
     // subSliceLabelPadding: 4,
   },
-  legend: {
+  itemLegend: {
     /////// Increase spacing between legend items
     // itemSpacing: 25,
     /////// Increase padding aroung legend
@@ -62,7 +62,8 @@ const radarDs = example.getDataSource();
 
 const config: RadarConfig = {
   pie: { ...(example.radarConfig ? example.radarConfig.pie : {}), ...CONFIG.pie },
-  legend: { ...(example.radarConfig ? example.radarConfig.legend : {}), ...CONFIG.legend },
+  itemLegend: { ...(example.radarConfig ? example.radarConfig.itemLegend : {}), ...CONFIG.itemLegend },
+  ringLegend: { ...(example.radarConfig ? example.radarConfig.ringLegend : {}), ...CONFIG.ringLegend },
   container: { ...(example.radarConfig ? example.radarConfig.container : {}), ...CONFIG.container },
 };
 

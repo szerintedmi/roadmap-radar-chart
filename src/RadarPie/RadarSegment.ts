@@ -68,6 +68,7 @@ export class RadarSegment extends D3Element {
     segmentGroup
       .append("path")
       .classed("radar-segment-arc", true)
+      .classed("radar-segment-arc-main", true)
       .attr("d", this.arcPathString)
       .attr("fill-opacity", this.opacity);
 

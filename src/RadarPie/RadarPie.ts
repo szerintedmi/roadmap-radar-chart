@@ -117,6 +117,7 @@ export interface Slice extends SliceProcessed {
 
 export interface RingInfo extends CatInfo {
   opacity?: number;
+  innerRadius?: number;
   radius?: number;
 }
 
@@ -161,12 +162,17 @@ export class RadarPie extends D3Element {
       this.config.minRingRadius
     );
 
-    this.radarContent.rings.forEach((ring, idx) => {
+    this.radarContent.rings.forEach((ring, ringLevel) => {
       ring.opacity =
-        ((this.config.ringMaxOpacity - this.config.ringMinOpacity) * (this.radarContent.rings.length - idx - 1)) /
+        ((this.config.ringMaxOpacity - this.config.ringMinOpacity) * (this.radarContent.rings.length - ringLevel - 1)) /
           (this.radarContent.rings.length - 1) +
         this.config.ringMinOpacity;
-      ring.radius = scaledRadiuses[idx];
+      
+      ring.innerRadius =
+        this.config.innerRadius +
+        d3.sum(this.radarContent.rings, (r, idx) => (idx < ringLevel ? r.radius + this.config.ringPadding : 0));
+      
+      ring.radius = scaledRadiuses[ringLevel];
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,18 +220,14 @@ export class RadarPie extends D3Element {
       // calculate arc for each segment
       subSlice.segments.forEach((segment) => {
         const ringRadius = this.radarContent.rings.find((r) => r.id === segment.ringId).radius;
-        const ringInnerRadiues =
-          this.config.innerRadius +
-          d3.sum(this.radarContent.rings, (r, idx) =>
-            idx < segment.ringLevel ? r.radius + this.config.ringPadding : 0
-          );
+        const ringInnerRadius = this.radarContent.rings[segment.ringLevel].innerRadius;
 
         segment.arcParams = {
           startAngle: subSlice.arcParams.startAngle,
           endAngle: subSlice.arcParams.endAngle,
           padAngle: subSlice.arcParams.padAngle,
-          innerRadius: ringInnerRadiues,
-          outerRadius: ringInnerRadiues + ringRadius,
+          innerRadius: ringInnerRadius,
+          outerRadius: ringInnerRadius + ringRadius,
         };
       });
     });

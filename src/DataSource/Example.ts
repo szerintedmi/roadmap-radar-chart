@@ -61,6 +61,9 @@ export class Example {
         rings: "exampleData/Confidential/rings.csv",
         items: "exampleData/Confidential/items.csv",
       },
+      radarConfig: {
+        ringLegend: { startAngle: -90, endAngle: 90 },
+      },
     },
 
     {
@@ -70,7 +73,8 @@ export class Example {
       fileUri: "./exampleData/TW_TechRadar_Vol23.csv",
 
       radarConfig: {
-        legend: { pos: { x: 400, y: 0 } },
+        itemLegend: { pos: { x: 400, y: 30 } },
+        ringLegend: { pos: { x: 400, y: 0 }, startAngle: 0, endAngle: 90 },
         pie: {
           innerRadius: 5,
           minSubSliceAngle: 360,

@@ -4,6 +4,7 @@ import { RadarError } from "../Errors";
 import { arrangeLabels } from "./arrangeLabels";
 import { ItemLegend, ItemLegendConfig } from "./ItemLegend";
 import { RadarPie, RadarPieConfig } from "./RadarPie";
+import { RingLegend, RingLegendConfig } from "./RingLegend";
 
 export type ContainerConfig = {
   width: number;
@@ -16,7 +17,8 @@ export type ContainerConfig = {
 export type RadarConfig = {
   container: Partial<ContainerConfig>;
   pie: Partial<RadarPieConfig>;
-  legend: Partial<ItemLegendConfig>;
+  itemLegend: Partial<ItemLegendConfig>;
+  ringLegend: Partial<RingLegendConfig>;
 };
 
 export const DEFAULT_CONTAINER_CONFIG: ContainerConfig = {
@@ -30,7 +32,8 @@ export class RadarContainer {
   config: Partial<RadarConfig>;
 
   radarPie: RadarPie;
-  legend: ItemLegend;
+  itemLegend: ItemLegend;
+  ringLegend: RingLegend;
 
   datasource: RadarDataSource;
   radarContent: RadarContentProcessed;
@@ -39,13 +42,22 @@ export class RadarContainer {
     this.config = config;
 
     this.config.container = Object.assign({}, DEFAULT_CONTAINER_CONFIG, this.config.container);
-    const defaultLegend: Partial<ItemLegendConfig> = {
+
+    const defaultItemLegend: Partial<ItemLegendConfig> = {
       pos: {
         x: (this.config.container.width / 8) * 5,
-        y: (this.config.container.height / 8) * 2,
+        y: 30,
       },
     };
-    this.config.legend = Object.assign({}, defaultLegend, this.config.legend);
+    this.config.itemLegend = Object.assign({}, defaultItemLegend, this.config.itemLegend);
+
+    const defaultRingLegend: Partial<RingLegendConfig> = {
+      pos: {
+        x: (this.config.container.width / 8) * 5 + 50,
+        y: 0,
+      },
+    };
+    this.config.ringLegend = Object.assign({}, defaultRingLegend, this.config.ringLegend);
   }
 
   public async fetchData(datasource: RadarDataSource) {
@@ -68,9 +80,11 @@ export class RadarContainer {
     this.radarPie = new RadarPie(this.radarContent, this.config.pie);
     const radarPieEl = radarContainerGroup.append(() => this.radarPie.getElement().node());
 
-    this.legend = new ItemLegend(this.radarContent.groups, this.radarPie.itemMarker, this.config.legend);
+    this.itemLegend = new ItemLegend(this.radarContent.groups, this.radarPie.itemMarker, this.config.itemLegend);
+    radarContainerGroup.append(() => this.itemLegend.getElement().node());
 
-    radarContainerGroup.append(() => this.legend.getElement().node());
+    this.ringLegend = new RingLegend(this.radarContent.rings, this.config.ringLegend);
+    radarContainerGroup.append(() => this.ringLegend.getElement().node());
 
     await arrangeLabels(radarContainerGroup);
 
