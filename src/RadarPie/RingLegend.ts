@@ -8,6 +8,7 @@ export type RingLegendConfig = {
   scale: number;
   startAngle: number;
   endAngle: number;
+  bBoxPadding: number;
 };
 
 const DEFAULT_RING_LEGEND_CONFIG: RingLegendConfig = {
@@ -19,6 +20,7 @@ const DEFAULT_RING_LEGEND_CONFIG: RingLegendConfig = {
   scale: 0.5,
   startAngle: -45,
   endAngle: 45,
+  bBoxPadding: 10,
 };
 
 export class RingLegend extends D3Element {

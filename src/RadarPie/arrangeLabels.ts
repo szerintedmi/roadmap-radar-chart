@@ -50,7 +50,7 @@ export function arrangeLabels(
       Slice | SubSlice | ItemLegendConfig,
       any,
       any
-    > = containerEl.selectAll(".label, .item-legend-group");
+    > = containerEl.selectAll(".label, .item-legend-group, .ring-legend-group");
 
     elementsToArrange.each((d, i, g) => {
       const el = d3.select(g[i]);
@@ -100,12 +100,13 @@ export function arrangeLabels(
       };
 
       el.datum(labelBoxedData);
-      const insertedEl = el.classed("item-legend-group")
-        ? el.insert("rect", "g").classed("legend-bbox", el.classed("item-legend-group"))
-        : el
-            .insert("rect", "text")
-            .classed("subslice-label-bbox", el.classed("subslice-label"))
-            .classed("slice-label-bbox", el.classed("slice-label"));
+      const insertedEl =
+        el.classed("item-legend-group") || el.classed("ring-legend-group")
+          ? el.insert("rect", "g").classed("legend-bbox", true)
+          : el
+              .insert("rect", "text")
+              .classed("subslice-label-bbox", el.classed("subslice-label"))
+              .classed("slice-label-bbox", el.classed("slice-label"));
 
       insertedEl
 
@@ -119,7 +120,7 @@ export function arrangeLabels(
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Setup simulation.
     const containerBBox = containerEl.node().getBBox();
-    const labelBBoxesSelection = containerEl.selectAll(".label, .item-legend-group");
+    const labelBBoxesSelection = containerEl.selectAll(".label, .item-legend-group, .ring-legend-group");
     const bBoxes = labelBBoxesSelection.data() as LabelBoxedData[];
     const labelAnchorPoints: AnchorData[] = (labelBBoxesSelection.data() as LabelBoxedData[]).map((d) => {
       return {
@@ -171,7 +172,7 @@ export function arrangeLabels(
     simulation.on("tick", onTick);
     simulation.on("end", onEnd);
 
-    const labelsSelection = containerEl.selectAll(".label, .item-legend-group ").data(bBoxes);
+    const labelsSelection = containerEl.selectAll(".label, .item-legend-group, .ring-legend-group").data(bBoxes);
 
     if (window.RADAR_DEBUG_MODE) addDebugGroup(containerEl, simNodes);
 
