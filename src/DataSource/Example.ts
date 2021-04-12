@@ -84,7 +84,7 @@ export class Example {
           sliceDividerOutFlowLength: -245,
           sliceLabelPadding: 12,
           subSlicePadAngle: 2,
-          itemMarker: { size: 80 },
+          itemMarker: { size: 80, colorScheme: { categorical: ["#20c72e", "dummy_dont_ask", "#ff4800"] } },
         },
       },
     },
