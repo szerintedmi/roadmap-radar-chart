@@ -5,24 +5,24 @@ import { SingleDsvDataSource } from "./SingleDsvDataSource";
 import { RadarConfig } from "../RadarPie/RadarContainer";
 import { RecursivePartial } from "../utils";
 
-type exmapleBase = {
+type exampleBase = {
   type: "dsv" | "json" | "singleDsv";
   name: string;
   radarConfig?: RecursivePartial<RadarConfig>;
 };
 
-type DsvDataSourceExample = exmapleBase & {
+type DsvDataSourceExample = exampleBase & {
   type: "dsv";
   separator: string;
   fileUris: DsvFileUris;
 };
 
-type JSONDataSourceExample = exmapleBase & {
+type JSONDataSourceExample = exampleBase & {
   type: "json";
   fileUri: string;
 };
 
-type SingleDsvDataSourceExample = exmapleBase & {
+type SingleDsvDataSourceExample = exampleBase & {
   type: "singleDsv";
   separator: string;
   fileUri: string;
@@ -84,7 +84,8 @@ export class Example {
           sliceDividerOutFlowLength: -245,
           sliceLabelPadding: 12,
           subSlicePadAngle: 2,
-          itemMarker: { size: 80, colorScheme: { categorical: ["#20c72e", "dummy_dont_ask", "#ff4800"] } },
+          // TODO: check why we need to pass dummy color
+          itemMarker: { size: 80, colorScheme: { categorical: ["#20c72e", "dummy_don_not_ask", "#ff4800"] } },
         },
       },
     },

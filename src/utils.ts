@@ -21,15 +21,15 @@ export type RecursivePartial<T> = {
 export function nestedAssign<T extends Object, S extends Object>(_target: T, source: S): T {
   const target = Object.assign({}, _target);
   if (source) {
-    Object.keys(source ? source : {}).forEach((sourcekey) => {
+    Object.keys(source ? source : {}).forEach((sourceKey) => {
       if (
-        Object.keys(source).find((targetkey) => targetkey === sourcekey) !== undefined &&
-        typeof source[sourcekey] === "object" &&
-        !Array.isArray(source[sourcekey])
+        Object.keys(source).find((targetKey) => targetKey === sourceKey) !== undefined &&
+        typeof source[sourceKey] === "object" &&
+        !Array.isArray(source[sourceKey])
       ) {
-        target[sourcekey] = nestedAssign(target[sourcekey], source[sourcekey]);
+        target[sourceKey] = nestedAssign(target[sourceKey], source[sourceKey]);
       } else {
-        target[sourcekey] = source[sourcekey];
+        target[sourceKey] = source[sourceKey];
       }
     });
   }

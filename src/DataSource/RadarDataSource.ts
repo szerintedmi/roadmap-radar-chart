@@ -1,7 +1,7 @@
 import { InputDataValidationErrors, RadarError } from "../Errors";
 
 ///////////////////////////////////////////////////////////////////////////////
-// Input Data format, see more on RadarDataSource class docu
+// Input Data format, see more explanation on RadarDataSource class
 ///////////////////////////////////////////////////////////////////////////////
 export type ItemBase = { id: string; label?: string; description?: string };
 
@@ -67,7 +67,7 @@ export type RadarContentProcessed = {
  *           label: "optional, id will be used if empty/missing",
  *           description: "optional",
  *           subSlices: [
- *             { id: "unique_subslice_id", label: "optional, id will be used if empty/missing", description: "optional" },
+ *             { id: "unique_subSlice_id", label: "optional, id will be used if empty/missing", description: "optional" },
  *           ],
  *         },
  *       ],
@@ -77,7 +77,7 @@ export type RadarContentProcessed = {
  *           id: "unique_item_id",
  *           label: "optional, id will be used if empty/missing",
  *           description: "optional",
- *           subSliceId: "<id_of_subslice_this_item_belongs_to>",
+ *           subSliceId: "<id_of_subSlice_this_item_belongs_to>",
  *           ringId: "<id_of_ring_this_item_belongs_to",
  *           groupName: "<name_of_group_this_item_belongs_to>",
  *         },
@@ -93,10 +93,10 @@ export abstract class RadarDataSource {
 
   abstract fetchData(): Promise<RadarInput>;
 
-  setRadarContent(_radarInput: Readonly<RadarInput>): this {
-    this.radarInput = { ..._radarInput };
+  setRadarContent(radarInput: Readonly<RadarInput>): this {
+    this.radarInput = { ...radarInput };
 
-    // set description to empty string if missing + set id to label if id is missing or vica versa
+    // set description to empty string if missing + set id to label if id is missing or vice versa
     this.radarInput.slices.forEach((slice) => {
       RadarDataSource.cleanse(slice);
       if (slice.subSlices && Array.isArray(slice.subSlices)) {
@@ -122,11 +122,12 @@ export abstract class RadarDataSource {
         const slice = this.radarInput.slices.find((slice) =>
           slice.subSlices.some((subSlice) => subSlice.id === inputItem.subSliceId)
         );
+
         if (slice) sliceId = slice.id; // validator will catch those without slice
 
         subSliceId = inputItem.subSliceId;
       } else if ("sliceId" in inputItem) {
-        // subSliceId is optional , use sliceId from item to refer to the dummy subslice created in slice
+        // subSliceId is optional , use sliceId from item to refer to the dummy subSlice created in slice
         sliceId = inputItem.sliceId;
         subSliceId = inputItem.sliceId;
       } else {
@@ -171,7 +172,7 @@ export abstract class RadarDataSource {
 
             const subSlice: SubSliceProcessed = Object.assign({}, subSliceInput, {
               sliceId: slice.id,
-              isDummy: slice.id === subSliceInput.id, // TODO: do it nicer, mark it when we create the dummy subslice
+              isDummy: slice.id === subSliceInput.id, // TODO: do it nicer, mark it when we create the dummy subSlice
               segments,
             });
 
@@ -238,7 +239,7 @@ export abstract class RadarDataSource {
     errors.push(
       ...radarContent.slices
         .filter((it) => !it.subSlices || !Array.isArray(it.subSlices) || it.subSlices.length === 0)
-        .map((it) => "Slice without subslice. sliceId: " + it.id)
+        .map((it) => "Slice without subSlice. sliceId: " + it.id)
     );
 
     errors.push(...this.checkIfUnique(radarContent.slices).map((id) => "Non unique sliceId: " + id));
@@ -275,8 +276,8 @@ export abstract class RadarDataSource {
   }
 
   checkIfUnique(items: ItemBase[]) {
-    const unqueIds = [...new Set(items.map((it) => it.id))];
-    const nonUnique = unqueIds.filter((uniq) => items.filter((it) => it.id === uniq).length > 1);
+    const uniqueIds = [...new Set(items.map((it) => it.id))];
+    const nonUnique = uniqueIds.filter((uniq) => items.filter((it) => it.id === uniq).length > 1);
     return nonUnique;
   }
 }

@@ -30,7 +30,7 @@ const CONFIG: RecursivePartial<RadarConfig> = {
     // innerRadius: 10,
     /////// space between rings
     // ringPadding: 5,
-    /////// the smallest angle (even for empty sub-slices). Tip: use 360 for equal size sub sclices
+    /////// the smallest angle (even for empty sub-slices). Tip: use 360 for equal size sub slices
     // minSubSliceAngle: 360,
     /////// padding between subSlices (in degrees)
     // subSlicePadAngle: 1,
@@ -41,7 +41,7 @@ const CONFIG: RecursivePartial<RadarConfig> = {
   itemLegend: {
     /////// Increase spacing between legend items
     // itemSpacing: 25,
-    /////// Increase padding aroung legend
+    /////// Increase padding around legend
     // bBoxPadding: 20,
   },
 };
@@ -50,7 +50,7 @@ const urlParams = parseUrlParams();
 window.RADAR_DEBUG_MODE = urlParams.radarDebugMode;
 
 const svg = d3
-  .select("#myradar-div")
+  .select("#myRadar-div")
   // .attr("padding-bottom", Math.round((100 * CONTAINER_HEIGHT) / CONTAINER_WIDTH) + "%") // might be needed for x-browser supp
   .append("svg")
   .classed("radar-svg-container", true)

@@ -6,14 +6,14 @@ A radar chart to generate an overview of your roadmap or tech radar.
 
 ![Now/Next/Later example](docs/exampleImages/NowNextLater1.png)
 
-- Arranges your items (e.g. initatives) on a Pie view:
+- Arranges your items (e.g. initiatives) on a Pie view:
   - high level grouping (e.g. goals) => slices
-  - optional sub grouping (eg. outcomes) => subslices
+  - optional sub grouping (eg. outcomes) => subSlices
   - your timescale/ring classification (eg. Now/Next/Later, Q1/Q2/Q3/Q4, adopt/trial/asses/hold etc.) => rings
 - Generates tooltips for each item
 - Reads data from CSV or JSON. _Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)_
 - Highly customizable:
-  - colors, fonts etc. via [style.css](src/stlye.css)
+  - colors, fonts etc. via [style.css](src/style.css)
   - layout and item markers via RadarConfig. See examples below and in [index.ts](src/index.ts)
 
 ## More Examples
@@ -22,15 +22,15 @@ A radar chart to generate an overview of your roadmap or tech radar.
 
 <img src="docs/exampleImages/toolTipExample.png" alt="Tooltip example" width="300"/>
 
-Tooltip layout is configurable in [style.css](src/stlye.css)
+Tooltip layout is configurable in [style.css](src/style.css)
 
 ### Tech radar
 
-ThougthWorks Technology Radar vol 23
+ThoughtWorks Technology Radar vol 23
 
 [Live view](https://radarchart.netlify.app/?ex=4)
 
-![Thougtworks Technology Radar vol 23](docs/exampleImages/TW_TechRadar_Vol23.png)
+![ThoughtWorks Technology Radar vol 23](docs/exampleImages/TW_TechRadar_Vol23.png)
 
 ThoughtWorks' [original tech radar](https://www.thoughtworks.com/radar) layout is better for this use case but
 less generic (e.g fixed 4 slices and 4 rings, no sub-slices etc.).
@@ -44,17 +44,17 @@ import "./style.css";
 import * as d3 from "d3";
 
 const svg = d3
-  .select("#myradar-div")
+  .select("#myRadar-div")
   .append("svg")
   .classed("radar-svg-container", true)
   .attr("viewBox", `0 0 900 500`);
 
 //////////////////////////////////////////////////////////////////////////
-// Setup datasource - replace with your own
+// Setup data source - replace with your own
 const radarDs = new SingleDsvDataSource("./exampleData/TW_TechRadar_Vol23.csv");
 
 //////////////////////////////////////////////////////////////////////////
-// Creating the chart with defualt configs.
+// Creating the chart with default configs.
 //      Customize it by passing a RadarConfig object
 const radarContainer = new RadarContainer();
 
@@ -64,6 +64,8 @@ radarContainer.fetchData(radarDs).then(() => {
   radarContainer.appendTo(svg);
 });
 ```
+
+_Note: an npm module is coming..._
 
 ## Licence
 

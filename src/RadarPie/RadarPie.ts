@@ -79,7 +79,7 @@ export interface TextPlacement {
     | "alphabetical"
     | "ideographic"
     | "hanging"
-    | "mathemetical"
+    | "mathematical"
     | "middle"
     | "central"
     | "text-before-edge"
@@ -87,7 +87,7 @@ export interface TextPlacement {
 }
 
 interface LabelData {
-  // middle of the arc in subSliceLabelDistance or sliceLabel distance from the outer perimiter
+  // middle of the arc in subSliceLabelDistance or sliceLabel distance from the outer perimeter
   // actual anchoring position of the label is calculated after rendering (based on textAnchor and label bBox)
   x: number;
   y: number;
@@ -285,7 +285,7 @@ export class RadarPie extends D3Element {
     const subSliceLabelGroup = pieGroup
       .append("g")
       .classed("labels-group", true)
-      .classed("subslice-labels-group", true);
+      .classed("subSlice-labels-group", true);
 
     const sliceLabelGroup = pieGroup.append("g").classed("labels-group", true).classed("slice-labels-group", true);
 
@@ -342,7 +342,7 @@ export class RadarPie extends D3Element {
 
     subSliceLabelGroup
       .selectAll("svg")
-      .data(subSlices.filter((d) => !d.isDummy)) // subslice is "dummy", created during data import for a slice w/o subSlice
+      .data(subSlices.filter((d) => !d.isDummy)) // subSlice is "dummy", created during data import for a slice w/o subSlice
       .join((enter) =>
         enter
           .append("svg")
@@ -350,24 +350,24 @@ export class RadarPie extends D3Element {
           .attr("x", (subSlice) => subSlice.labelData.x)
           .attr("y", (subSlice) => subSlice.labelData.y)
           .classed("label", true)
-          .classed("subslice-label", true)
+          .classed("subSlice-label", true)
 
           .append("text")
-          .attr("id", (subSlice) => "subslice-label-" + subSlice.id)
+          .attr("id", (subSlice) => "subSlice-label-" + subSlice.id)
           .classed("label-text", true)
-          .classed("subslice-label-text", true)
+          .classed("subSlice-label-text", true)
           .text((subSlice) => subSlice.label)
           .style("text-anchor", (subSlice) => subSlice.labelData.labelPlacement.hAnchor)
           .style("dominant-baseline", (subSlice) => subSlice.labelData.labelPlacement.vAnchor)
       );
 
     sliceGroup.each((slice, idx, nodes) => {
-      const el = d3.select(nodes[idx]).selectAll(".radar-subslice-group");
+      const el = d3.select(nodes[idx]).selectAll(".radar-subSlice-group");
       const subSliceGroup = el.data(slice.subSlices).join((enter) =>
         enter
           .append("g")
-          .classed("radar-subslice-group", true)
-          .attr("id", (subSlice) => "radar-subslice-group-" + slice.id + "-" + subSlice.id)
+          .classed("radar-subSlice-group", true)
+          .attr("id", (subSlice) => "radar-subSlice-group-" + slice.id + "-" + subSlice.id)
       );
 
       ////////////////////////////////////////////////////////////////////////

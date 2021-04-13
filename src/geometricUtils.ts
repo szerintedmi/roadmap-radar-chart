@@ -1,7 +1,7 @@
 // TODO:
 //        - get rid of NewSVGPathElement: extend SVGPathElement type globally
 //        - run polyfill from.babelrc?
-//        - get rid of geometric lib (use d3.polygon* fxs for bbox)
+//        - get rid of geometric lib (use d3.polygon* fxs for bBox)
 //        - get rid of AdaptiveLinearization lib, use d3.geo instead
 import * as SVGPath from "svgpath";
 const AdaptiveLinearization = require("adaptive-linearization");
@@ -58,7 +58,7 @@ export function degToRad(degrees: number): number {
  *   }} sourcePoint Coordinates in the sourceElement { x: number, y: number}
  * @returns
  */
-export function transfromElementPoint(
+export function transformElementPoint(
   sourceElement: SVGGraphicsElement | SVGSVGElement,
   targetElement: SVGGraphicsElement | SVGSVGElement,
   sourcePoint: {
@@ -207,7 +207,7 @@ type AdaptiveLinearizationOptions = {
  * Converts all bezier curves into a series of lines based on an acceptable error value
  * (i.e. it will add more lines where the curve is curvier, and less lines if it's mostly straight ).
  *
- * Default  approximationScale: 0.1 (low quality, less lines). It can be overriden in options param
+ * Default  approximationScale: 0.1 (low quality, less lines). It can be overridden in options param
  *
  * More config options: https://github.com/fforw/adaptive-linearization#options
  *
