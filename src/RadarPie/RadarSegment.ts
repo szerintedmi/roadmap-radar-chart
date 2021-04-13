@@ -8,7 +8,7 @@ import { D3Element } from "../D3Element";
 
 import { distributePointsWithinBoundary, flattenSVGPath, Point } from "../geometricUtils";
 import { ItemMarker } from "./ItemMarker";
-import { RadarPieConfig, RingInfo, Segment } from "./RadarPie";
+import { RingInfo, Segment } from "./RadarPie";
 
 const SYMBOL_BOUND_RADIUS = 6;
 const PADDING_ANGLE = (2 * Math.PI) / 180;

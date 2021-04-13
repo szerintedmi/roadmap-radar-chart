@@ -5,10 +5,13 @@ import { DataImportError, InputDataValidationErrors } from "./Errors";
 import { Example } from "./DataSource/Example";
 import { RadarConfig, RadarContainer } from "./RadarPie/RadarContainer";
 import { nestedAssign, RecursivePartial } from "./utils";
+import { RadarDataSource } from "./DataSource/RadarDataSource";
+import { SingleDsvDataSource } from "./DataSource/SingleDsvDataSource";
 
 type RadarUrlParams = {
   radarDebugMode: boolean;
   exampleId: number;
+  singleCsvUri: string;
 };
 
 const DEFAULT_EXAMPLE_ID = 2;
@@ -30,7 +33,7 @@ const CONFIG: RecursivePartial<RadarConfig> = {
     // innerRadius: 10,
     /////// space between rings
     // ringPadding: 5,
-    /////// the smallest angle (even for empty sub-slices). Tip: use 360 for equal size sub sclices
+    /////// the smallest angle (even for empty sub-slices). Tip: use 360 for equal size sub slices
     // minSubSliceAngle: 360,
     /////// padding between subSlices (in degrees)
     // subSlicePadAngle: 1,
@@ -41,7 +44,7 @@ const CONFIG: RecursivePartial<RadarConfig> = {
   itemLegend: {
     /////// Increase spacing between legend items
     // itemSpacing: 25,
-    /////// Increase padding aroung legend
+    /////// Increase padding around legend
     // bBoxPadding: 20,
   },
 };
@@ -50,7 +53,7 @@ const urlParams = parseUrlParams();
 window.RADAR_DEBUG_MODE = urlParams.radarDebugMode;
 
 const svg = d3
-  .select("#myradar-div")
+  .select("#myRadar-div")
   // .attr("padding-bottom", Math.round((100 * CONTAINER_HEIGHT) / CONTAINER_WIDTH) + "%") // might be needed for x-browser supp
   .append("svg")
   .classed("radar-svg-container", true)
@@ -58,10 +61,18 @@ const svg = d3
 
 //////////////////////////////////////////////////////////////////////////
 // Fetch data and create radar
-const example = new Example(urlParams.exampleId);
-const radarDs = example.getDataSource();
+let config: RecursivePartial<RadarConfig>;
+let radarDs: RadarDataSource;
 
-const config: RecursivePartial<RadarConfig> = nestedAssign(example.radarConfig, CONFIG);
+if (urlParams.singleCsvUri) {
+  console.log(urlParams.singleCsvUri);
+  radarDs = new SingleDsvDataSource(urlParams.singleCsvUri);
+} else {
+  const example = new Example(urlParams.exampleId);
+
+  radarDs = example.getDataSource();
+  config = nestedAssign(example.radarConfig, CONFIG);
+}
 
 const radarContainer = new RadarContainer(config);
 
@@ -75,7 +86,8 @@ radarContainer
     let errorText: string;
 
     if (error instanceof InputDataValidationErrors) {
-      errorText = `${error.errors.length} input data validation errors while fetching ${example.name}\n ${
+      // TODO: have some naming and generic source link in RadarDataSource so we can have more meaningful msgs
+      errorText = `${error.errors.length} input data validation errors while fetching data\n ${
         error.message
       }\n${error.errors.join("\n")}`;
     } else if (error instanceof DataImportError) {
@@ -112,5 +124,7 @@ function parseUrlParams(): RadarUrlParams {
       radarDebugMode = false;
   }
 
-  return { radarDebugMode, exampleId };
+  const singleCsvUri = urlParams.get("csv");
+
+  return { radarDebugMode, exampleId, singleCsvUri };
 }

@@ -11,13 +11,13 @@ type Rect = { x: number; y: number; width: number; height: number };
 
 /**
  *
- * Rectangle collosion force.
+ * Rectangle collision force.
  *  nodes must have {x, y, width, height} properties
  * NB: {x,y} is the center of the rectangle!
  *
  * Based on: https://observablehq.com/@roblallier/rectangle-collision-force
  *   see also: http://bl.ocks.org/natebates/273b99ddf86e2e2e58ff
- *    quadtree visual explanation: https://jimkang.com/quadtreevis/
+ *    quad tree visual explanation: https://jimkang.com/quadtreevis/
  * @export
  * @param {(node: any) => boolean} [nodesFilter=() => true]
  * @returns

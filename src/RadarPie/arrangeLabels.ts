@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { Force } from "d3";
 import { RadarError } from "../Errors";
-import { transfromElementPoint } from "../geometricUtils";
+import { transformElementPoint } from "../geometricUtils";
 import { ItemLegendConfig } from "./ItemLegend";
 import { Slice, SubSlice } from "./RadarPie";
 import { rectForceCollide } from "./rectForceCollide";
@@ -80,37 +80,37 @@ export function arrangeLabels(
       };
 
       const bBoxCenter = { x: bBox.x + paddedBBox.width / 2 - padding, y: bBox.y + paddedBBox.height / 2 - padding };
-      const transformedbBoxCenter = transfromElementPoint(elNode, containerEl.node(), bBoxCenter);
+      const transformedBBoxCenter = transformElementPoint(elNode, containerEl.node(), bBoxCenter);
 
-      const svgbBoxTopLeft = { x: parseFloat(el.attr("x")), y: parseFloat(el.attr("y")) };
+      const svgBBoxTopLeft = { x: parseFloat(el.attr("x")), y: parseFloat(el.attr("y")) };
 
       const labelBoxedData: LabelBoxedData = {
-        x: transformedbBoxCenter.x,
-        y: transformedbBoxCenter.y,
+        x: transformedBBoxCenter.x,
+        y: transformedBBoxCenter.y,
         width: paddedBBox.width,
         height: paddedBBox.height,
         origBBox: paddedBBox,
         containerTopLeftOffset: {
-          x: transformedbBoxCenter.x - svgbBoxTopLeft.x,
-          y: transformedbBoxCenter.y - svgbBoxTopLeft.y,
+          x: transformedBBoxCenter.x - svgBBoxTopLeft.x,
+          y: transformedBBoxCenter.y - svgBBoxTopLeft.y,
         },
 
-        isSubLabel: el.classed("subslice-label"),
+        isSubLabel: el.classed("subSlice-label"),
         isAnchor: false,
       };
 
       el.datum(labelBoxedData);
       const insertedEl =
         el.classed("item-legend-group") || el.classed("ring-legend-group")
-          ? el.insert("rect", "g").classed("legend-bbox", true)
+          ? el.insert("rect", "g").classed("legend-bBox", true)
           : el
               .insert("rect", "text")
-              .classed("subslice-label-bbox", el.classed("subslice-label"))
-              .classed("slice-label-bbox", el.classed("slice-label"));
+              .classed("subSlice-label-bBox", el.classed("subSlice-label"))
+              .classed("slice-label-bBox", el.classed("slice-label"));
 
       insertedEl
 
-        .classed("label-bbox", true)
+        .classed("label-bBox", true)
         .attr("width", labelBoxedData.origBBox.width)
         .attr("height", labelBoxedData.origBBox.height)
         .attr("x", labelBoxedData.origBBox.x)
@@ -189,7 +189,7 @@ export function arrangeLabels(
 
     function onEnd() {
       resolve(containerEl);
-      console.log("Label arrangment finished after", tickCount, "iterations");
+      console.log("Label arrangement finished after", tickCount, "iterations");
     }
   });
 }

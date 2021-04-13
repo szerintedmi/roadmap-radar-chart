@@ -13,7 +13,7 @@ import {
 
 import { RadarSegment } from "./RadarSegment";
 import { degToRad } from "../geometricUtils";
-import { nestedAssign, RecursivePartial } from "../utils";
+import { nestedAssign, RecursivePartial, scaleProportional } from "../utils";
 
 export type RadarPieConfig = {
   outerRadius: number;
@@ -79,7 +79,7 @@ export interface TextPlacement {
     | "alphabetical"
     | "ideographic"
     | "hanging"
-    | "mathemetical"
+    | "mathematical"
     | "middle"
     | "central"
     | "text-before-edge"
@@ -87,7 +87,7 @@ export interface TextPlacement {
 }
 
 interface LabelData {
-  // middle of the arc in subSliceLabelDistance or sliceLabel distance from the outer perimiter
+  // middle of the arc in subSliceLabelDistance or sliceLabel distance from the outer perimeter
   // actual anchoring position of the label is calculated after rendering (based on textAnchor and label bBox)
   x: number;
   y: number;
@@ -155,7 +155,7 @@ export class RadarPie extends D3Element {
       this.config.innerRadius -
       this.config.ringPadding * (this.radarContent.rings.length - 1);
 
-    const scaledRadiuses = RadarPie.scaleProportional(
+    const scaledRadiuses = scaleProportional(
       this.radarContent.rings.map(
         (r, level) => r.itemCount * Math.pow(this.radarContent.rings.length - level, 2) * Math.PI
       ),
@@ -178,7 +178,7 @@ export class RadarPie extends D3Element {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate subSlices angles and label positions
-    const scaledSubSlices = RadarPie.scaleProportional(
+    const scaledSubSlices = scaleProportional(
       this.radarContent.subSlices.map((r) => r.itemCount),
       360,
       this.config.minSubSliceAngle
@@ -285,7 +285,7 @@ export class RadarPie extends D3Element {
     const subSliceLabelGroup = pieGroup
       .append("g")
       .classed("labels-group", true)
-      .classed("subslice-labels-group", true);
+      .classed("subSlice-labels-group", true);
 
     const sliceLabelGroup = pieGroup.append("g").classed("labels-group", true).classed("slice-labels-group", true);
 
@@ -342,7 +342,7 @@ export class RadarPie extends D3Element {
 
     subSliceLabelGroup
       .selectAll("svg")
-      .data(subSlices.filter((d) => !d.isDummy)) // subslice is "dummy", created during data import for a slice w/o subSlice
+      .data(subSlices.filter((d) => !d.isDummy)) // subSlice is "dummy", created during data import for a slice w/o subSlice
       .join((enter) =>
         enter
           .append("svg")
@@ -350,24 +350,24 @@ export class RadarPie extends D3Element {
           .attr("x", (subSlice) => subSlice.labelData.x)
           .attr("y", (subSlice) => subSlice.labelData.y)
           .classed("label", true)
-          .classed("subslice-label", true)
+          .classed("subSlice-label", true)
 
           .append("text")
-          .attr("id", (subSlice) => "subslice-label-" + subSlice.id)
+          .attr("id", (subSlice) => "subSlice-label-" + subSlice.id)
           .classed("label-text", true)
-          .classed("subslice-label-text", true)
+          .classed("subSlice-label-text", true)
           .text((subSlice) => subSlice.label)
           .style("text-anchor", (subSlice) => subSlice.labelData.labelPlacement.hAnchor)
           .style("dominant-baseline", (subSlice) => subSlice.labelData.labelPlacement.vAnchor)
       );
 
     sliceGroup.each((slice, idx, nodes) => {
-      const el = d3.select(nodes[idx]).selectAll(".radar-subslice-group");
+      const el = d3.select(nodes[idx]).selectAll(".radar-subSlice-group");
       const subSliceGroup = el.data(slice.subSlices).join((enter) =>
         enter
           .append("g")
-          .classed("radar-subslice-group", true)
-          .attr("id", (subSlice) => "radar-subslice-group-" + slice.id + "-" + subSlice.id)
+          .classed("radar-subSlice-group", true)
+          .attr("id", (subSlice) => "radar-subSlice-group-" + slice.id + "-" + subSlice.id)
       );
 
       ////////////////////////////////////////////////////////////////////////
@@ -432,30 +432,5 @@ export class RadarPie extends D3Element {
 
       return anchor;
     }
-  }
-
-  static scaleProportional(items: number[], targetTotal: number, minValue: number = 0, iterationCt: number = 0) {
-    const itemsSum = items.reduce((a, b) => a + b, 0);
-    const scaled = items.map((r, i, a) => (targetTotal * r) / itemsSum);
-
-    const scaledMin = scaled.map((i) => Math.max(i, minValue));
-    const scaledMinSum = scaledMin.reduce((a, b) => a + b, 0);
-    const addedSum = scaledMinSum - targetTotal;
-
-    const aboveMinSum = scaled.filter((i) => i > minValue).reduce((a, b) => a + b, 0);
-    const adjustmentRatio = addedSum / aboveMinSum;
-
-    let scaledMinAdjusted = scaledMin.map((it) =>
-      it <= minValue ? it : Math.max(it - it * adjustmentRatio, minValue)
-    );
-
-    const adjustedSum = scaledMinAdjusted.reduce((a, b) => a + b);
-
-    if (adjustedSum > targetTotal && iterationCt < 3) {
-      iterationCt++;
-      scaledMinAdjusted = RadarPie.scaleProportional(scaledMinAdjusted, targetTotal, minValue, iterationCt);
-    }
-
-    return scaledMinAdjusted;
   }
 }

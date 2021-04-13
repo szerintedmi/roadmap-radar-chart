@@ -23,7 +23,7 @@ export const DEFAULT_ITEM_MARKER_CONFIG: ItemMarkerConfig = {
   colorScheme: {
     // when no. of groups is less
     categorical: [...d3.schemeSet1], // schemeSet1 schemeTableau10 schemePaired etc: https://github.com/d3/d3-scale-chromatic#categorical
-    // when no. of groups is more than avialable in the categorical scheme
+    // when no. of groups is more than available in the categorical scheme
     diverging: d3.interpolateTurbo, //  interpolateTurbo interpolateWarm interpolateRainbow interpolateSinebow https://github.com/d3/d3-scale-chromatic#diverging
   },
   toolTipOpacity: 0.9,
@@ -38,10 +38,8 @@ export class ItemMarker extends NameSpaced {
   constructor(groups: CatInfo[], config?: Partial<ItemMarkerConfig>) {
     super();
     this.groups = groups;
-    console.log(" config", config);
-    console.log(" DEFAULT_ITEM_MARKER_CONFIG", DEFAULT_ITEM_MARKER_CONFIG);
+
     this.config = nestedAssign(DEFAULT_ITEM_MARKER_CONFIG, config);
-    console.log(" this.config", this.config);
 
     this.symbol = d3.symbol().type(this.config.symbolType).size(this.config.size);
 
@@ -81,7 +79,7 @@ export class ItemMarker extends NameSpaced {
     // TODO: this group is redundant is svg structure, remove it.
     const markersGroup = d3.create(this.namespace + "g").classed("item-markers", true);
 
-    const toolTipEl = d3.select("#myradar-tooltip");
+    const toolTipEl = d3.select("#myRadar-tooltip");
 
     markersGroup
       .selectAll("g")

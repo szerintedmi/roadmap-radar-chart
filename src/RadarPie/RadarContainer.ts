@@ -36,11 +36,11 @@ export class RadarContainer {
   itemLegend: ItemLegend;
   ringLegend: RingLegend;
 
-  datasource: RadarDataSource;
+  dataSource: RadarDataSource;
   radarContent: RadarContentProcessed;
 
-  constructor(config?: RecursivePartial<RadarConfig>) {
-    this.config = config;
+  constructor(config: RecursivePartial<RadarConfig> = {}) {
+    this.config = Object.assign({}, config);
 
     this.config.container = nestedAssign(DEFAULT_CONTAINER_CONFIG, this.config.container);
 
@@ -61,17 +61,17 @@ export class RadarContainer {
     this.config.ringLegend = nestedAssign(defaultRingLegend, this.config.ringLegend);
   }
 
-  public async fetchData(datasource: RadarDataSource) {
-    this.datasource = datasource;
+  public async fetchData(dataSource: RadarDataSource) {
+    this.dataSource = dataSource;
 
-    await this.datasource.fetchData();
-    this.radarContent = this.datasource.getRadarContent();
+    await this.dataSource.fetchData();
+    this.radarContent = this.dataSource.getRadarContent();
 
     return this.radarContent;
   }
 
   public async appendTo(svgElement: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>) {
-    if (!this.datasource && !this.radarContent) throw new RadarError("Call fetchData before calling getElement");
+    if (!this.dataSource && !this.radarContent) throw new RadarError("Call fetchData before calling getElement");
 
     const radarContainerGroup = svgElement
       .append("g")
@@ -140,7 +140,7 @@ export class RadarContainer {
         .attr("fill", "none")
         .attr("stroke", "gray");
 
-      console.log("svg container bbox", bb, "bb aspect ratio:", bb.width / bb.height);
+      console.log("svg container bBox", bb, "bb aspect ratio:", bb.width / bb.height);
       console.log("container size:", newWidth, newHeight, "aspect ratio:", newWidth / newHeight);
     }
 

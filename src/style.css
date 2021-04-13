@@ -103,7 +103,7 @@ body {
   fill: #666666;
 }
 
-.subslice-label-text {
+.subSlice-label-text {
   font-size: 0.7em;
 }
 
@@ -115,7 +115,7 @@ body {
   outline: 1px solid #666666;
 }
 
-.legend-bbox {
+.legend-bBox {
   fill: none;
 }
 
@@ -123,12 +123,12 @@ body {
   outline: 1px solid #666666;
 } */
 
-.subslice-label-bbox {
+.subSlice-label-bBox {
   fill: #fed800;
   opacity: 0.2;
 }
 
-.slice-label-bbox {
+.slice-label-bBox {
   fill: #fed800;
   opacity: 1;
 }
