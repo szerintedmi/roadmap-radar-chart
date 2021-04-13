@@ -31,19 +31,25 @@ export class SingleDsvDataSource extends RadarDataSource {
         id: ring,
       }));
 
-      const items: RadarItemInput[] = _items.map((it) => ({
-        id: it.label,
+      const items: RadarItemInput[] = _items.map((it, idx) => ({
+        id: idx + "_" + it.label,
+        label: it.label,
         sliceId: it.slice,
-        subSliceId: it.subSlice,
+        subSliceId: it.slice + it.subSlice,
         ringId: it.ring,
         groupName: it.group,
         description: it.description,
       }));
 
       const slices: SliceInput[] = uniqueSlices.map((slice) => {
-        const subSlices: SubSliceInput[] = _items
-          .filter((item) => item.subSlice && item.slice == slice.id)
-          .map((it) => ({ id: it.subSlice }));
+        const uniqueSubSlicesNames = [
+          ...new Set(_items.filter((item) => item.slice === slice.id).map((it) => it.subSlice)),
+        ];
+
+        const subSlices: SubSliceInput[] = uniqueSubSlicesNames.map((subSliceName) => ({
+          id: slice.id + subSliceName,
+          label: subSliceName,
+        }));
 
         return Object.assign(
           {},

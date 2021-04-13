@@ -35,6 +35,41 @@ ThoughtWorks Technology Radar vol 23
 ThoughtWorks' [original tech radar](https://www.thoughtworks.com/radar) layout is better for this use case but
 less generic (e.g fixed 4 slices and 4 rings, no sub-slices etc.).
 
+## Using it with your data
+
+The simplest way to add data is via a google spreadsheet:
+
+1.  Save a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1gqbrntkGRWvXSzqCt-LjLCQyHzp8-vsI4BauvBBtHIE/)
+
+    _Note_: sheet columns (watch out for the capitalization):
+
+    slice, [subSlice], ring, group, label, [description]
+
+1.  Add your items one per row
+
+    _Tips:_
+
+    - rings will be displayed in the order of appearance in the sheet. I.e. the ring of the first item in the spreadsheet will be the innermost ring.
+    - subSlice is optional , you can have single level grouping
+    - The order of slices and sub slices are conserved.
+    - Item colours are based on their group. Colors are assigned to [d3.schemeSet1](https://github.com/d3/d3-scale-chromatic#schemeSet1) color scheme in the order of their appearance. I.e. first group appearing will be red by default. You can customize the colorscheme. See an example in [Example.ts](src/Example.ts)
+
+1.  Publish the sheet as CSV and copy the link
+
+    <img src="./docs/gSheetPublish1.png" alt="Google sheet publish 1" width="300"/>
+    <img src="./docs/gSheetPublish2.png" alt="Google sheet publish 2" width="250"/>
+    <img src="./docs/gSheetPublish3.png" alt="Google sheet publish 3" width="250"/>
+
+1.  Add the link as `csv` url parameter
+
+    `https://radarchart.netlify.app/?csv=<your link>`
+
+    It should look something like this:
+
+    [https://radarchart.netlify.app/?csv=https://docs.google.com/spreadsheets/d/e/2PACX-1vSMgk767I1gWr1F1bmI2XMttvPa1TyXcdd910BSfQZjqIvOHA_aE_ESnAhftTmjnJ-KL5uwPr-LIRYJ/pub?output=csv](https://radarchart.netlify.app/?csv=https://docs.google.com/spreadsheets/d/e/2PACX-1vSMgk767I1gWr1F1bmI2XMttvPa1TyXcdd910BSfQZjqIvOHA_aE_ESnAhftTmjnJ-KL5uwPr-LIRYJ/pub?output=csv)
+
+    Note: Radar Chart will reflect changes in your google sheet after reload. Published google sheets take sometime to reflect the changes just be patient and keep reloading.
+
 ## Usage in your code
 
 For more details (eg. `RadarConfig` tips, error handling etc.) see [index.ts](src/index.ts)

@@ -89,6 +89,14 @@ export class Example {
         },
       },
     },
+
+    {
+      type: "singleDsv",
+      name: "Single Google sheet example",
+      separator: ",",
+      fileUri:
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMgk767I1gWr1F1bmI2XMttvPa1TyXcdd910BSfQZjqIvOHA_aE_ESnAhftTmjnJ-KL5uwPr-LIRYJ/pub?output=csv",
+    },
   ];
 
   constructor(exampleIdx: number) {

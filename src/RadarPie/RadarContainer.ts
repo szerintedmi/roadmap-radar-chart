@@ -39,8 +39,8 @@ export class RadarContainer {
   dataSource: RadarDataSource;
   radarContent: RadarContentProcessed;
 
-  constructor(config?: RecursivePartial<RadarConfig>) {
-    this.config = config;
+  constructor(config: RecursivePartial<RadarConfig> = {}) {
+    this.config = Object.assign({}, config);
 
     this.config.container = nestedAssign(DEFAULT_CONTAINER_CONFIG, this.config.container);
 
