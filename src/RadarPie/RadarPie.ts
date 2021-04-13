@@ -13,7 +13,7 @@ import {
 
 import { RadarSegment } from "./RadarSegment";
 import { degToRad } from "../geometricUtils";
-import { nestedAssign, RecursivePartial } from "../utils";
+import { nestedAssign, RecursivePartial, scaleProportional } from "../utils";
 
 export type RadarPieConfig = {
   outerRadius: number;
@@ -155,7 +155,7 @@ export class RadarPie extends D3Element {
       this.config.innerRadius -
       this.config.ringPadding * (this.radarContent.rings.length - 1);
 
-    const scaledRadiuses = RadarPie.scaleProportional(
+    const scaledRadiuses = scaleProportional(
       this.radarContent.rings.map(
         (r, level) => r.itemCount * Math.pow(this.radarContent.rings.length - level, 2) * Math.PI
       ),
@@ -178,7 +178,7 @@ export class RadarPie extends D3Element {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate subSlices angles and label positions
-    const scaledSubSlices = RadarPie.scaleProportional(
+    const scaledSubSlices = scaleProportional(
       this.radarContent.subSlices.map((r) => r.itemCount),
       360,
       this.config.minSubSliceAngle
@@ -432,30 +432,5 @@ export class RadarPie extends D3Element {
 
       return anchor;
     }
-  }
-
-  static scaleProportional(items: number[], targetTotal: number, minValue: number = 0, iterationCt: number = 0) {
-    const itemsSum = items.reduce((a, b) => a + b, 0);
-    const scaled = items.map((r, i, a) => (targetTotal * r) / itemsSum);
-
-    const scaledMin = scaled.map((i) => Math.max(i, minValue));
-    const scaledMinSum = scaledMin.reduce((a, b) => a + b, 0);
-    const addedSum = scaledMinSum - targetTotal;
-
-    const aboveMinSum = scaled.filter((i) => i > minValue).reduce((a, b) => a + b, 0);
-    const adjustmentRatio = addedSum / aboveMinSum;
-
-    let scaledMinAdjusted = scaledMin.map((it) =>
-      it <= minValue ? it : Math.max(it - it * adjustmentRatio, minValue)
-    );
-
-    const adjustedSum = scaledMinAdjusted.reduce((a, b) => a + b);
-
-    if (adjustedSum > targetTotal && iterationCt < 3) {
-      iterationCt++;
-      scaledMinAdjusted = RadarPie.scaleProportional(scaledMinAdjusted, targetTotal, minValue, iterationCt);
-    }
-
-    return scaledMinAdjusted;
   }
 }
