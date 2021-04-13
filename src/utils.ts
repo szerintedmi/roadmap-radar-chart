@@ -1,4 +1,20 @@
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
+import { degToRad } from "./geometricUtils";
+
+export interface TextPlacement {
+  hAnchor: "middle" | "start" | "end";
+
+  // http://bl.ocks.org/eweitnauer/7325338
+  vAnchor:
+    | "baseline"
+    | "alphabetical"
+    | "ideographic"
+    | "hanging"
+    | "mathematical"
+    | "middle"
+    | "central"
+    | "text-before-edge"
+    | "text-after-edge"; // "middle" | "top" | "bottom";
+}
 
 // https://stackoverflow.com/questions/47914536/use-partial-in-nested-property-with-typescript
 export type RecursivePartial<T> = {
@@ -70,4 +86,42 @@ export function scaleProportional(items: number[], targetTotal: number, minValue
   }
 
   return scaledMinAdjusted;
+}
+
+export function calculateAnchorPlacement(startOrMidAngle: number, endAngle?: number): TextPlacement {
+  {
+    let rads: number;
+    const H_CUT_OFF_DEGREE = 10;
+    const V_CUT_OFF_DEGREE = 45;
+
+    if (!endAngle) rads = startOrMidAngle;
+    else rads = (endAngle - startOrMidAngle) / 2 + startOrMidAngle;
+
+    let anchor = <TextPlacement>{};
+    // circle top section
+    if (rads > degToRad(360 - H_CUT_OFF_DEGREE) || rads < degToRad(H_CUT_OFF_DEGREE)) anchor.hAnchor = "middle";
+    // bottom section
+    else if (rads > degToRad(180 - H_CUT_OFF_DEGREE) && rads < degToRad(180 + H_CUT_OFF_DEGREE))
+      anchor.hAnchor = "middle";
+    // right section
+    else if (rads >= degToRad(H_CUT_OFF_DEGREE) && rads <= degToRad(180 - H_CUT_OFF_DEGREE)) anchor.hAnchor = "start";
+    // left section
+    else if (rads >= degToRad(180 + H_CUT_OFF_DEGREE) && rads <= degToRad(360 - H_CUT_OFF_DEGREE))
+      anchor.hAnchor = "end";
+    else throw new Error("Invalid rads for horizontal calculateAnchorPlacement: " + rads);
+
+    // circle top section
+    if (rads > degToRad(360 - V_CUT_OFF_DEGREE) || rads < degToRad(V_CUT_OFF_DEGREE)) anchor.vAnchor = "baseline";
+    // bottom section
+    else if (rads > degToRad(180 - V_CUT_OFF_DEGREE) && rads < degToRad(180 + V_CUT_OFF_DEGREE))
+      anchor.vAnchor = "hanging";
+    // right section
+    else if (rads >= degToRad(V_CUT_OFF_DEGREE) && rads <= degToRad(180 - V_CUT_OFF_DEGREE)) anchor.vAnchor = "middle";
+    // left section
+    else if (rads >= degToRad(180 + V_CUT_OFF_DEGREE) && rads <= degToRad(360 - V_CUT_OFF_DEGREE))
+      anchor.vAnchor = "middle";
+    else throw new Error("Invalid rads for vertical calculateAnchorPlacement: " + rads);
+
+    return anchor;
+  }
 }

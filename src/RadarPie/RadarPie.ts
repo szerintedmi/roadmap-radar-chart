@@ -13,7 +13,7 @@ import {
 
 import { RadarSegment } from "./RadarSegment";
 import { degToRad } from "../geometricUtils";
-import { nestedAssign, RecursivePartial, scaleProportional } from "../utils";
+import { calculateAnchorPlacement, nestedAssign, RecursivePartial, scaleProportional, TextPlacement } from "../utils";
 
 export type RadarPieConfig = {
   outerRadius: number;
@@ -205,7 +205,7 @@ export class RadarPie extends D3Element {
       subSlice.arcParams = arc;
 
       subSlice.labelData = {
-        labelPlacement: RadarPie.calculateAnchorPlacement(subSlice.arcParams.startAngle, subSlice.arcParams.endAngle),
+        labelPlacement: calculateAnchorPlacement(subSlice.arcParams.startAngle, subSlice.arcParams.endAngle),
         bBoxPadding: this.config.subSliceLabelPadding,
         x:
           (subSlice.arcParams.outerRadius + this.config.subSliceLabelDistance) *
@@ -243,7 +243,7 @@ export class RadarPie extends D3Element {
       slice.labelData = {
         x: Math.cos(midAngle - Math.PI / 2) * (firstArcParams.outerRadius + this.config.sliceLabelDistance),
         y: Math.sin(midAngle - Math.PI / 2) * (firstArcParams.outerRadius + this.config.sliceLabelDistance),
-        labelPlacement: RadarPie.calculateAnchorPlacement(midAngle),
+        labelPlacement: calculateAnchorPlacement(midAngle),
         bBoxPadding: this.config.sliceLabelPadding,
 
         midAngle,
