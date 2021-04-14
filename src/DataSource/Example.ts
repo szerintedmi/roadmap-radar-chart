@@ -63,7 +63,8 @@ export class Example {
         items: "exampleData/Confidential/items.csv",
       },
       radarConfig: {
-        ringLegend: { startAngle: -90, endAngle: 90 },
+        pie: { minSubSliceAngle: 12 },
+        ringLegend: { startAngle: -65, endAngle: 65 },
       },
     },
 
@@ -77,13 +78,10 @@ export class Example {
         itemLegend: { pos: { x: 400, y: 30 } },
         ringLegend: { pos: { x: 400, y: 0 }, startAngle: 0, endAngle: 90 },
         pie: {
-          innerRadius: 5,
-          minSubSliceAngle: 360,
-          minRingRadius: 50,
-          ringPadding: 4,
-          sliceDividerOutFlowLength: -245,
+          minRingRadius: 150,
+          innerRadius: 10,
+          ringPadding: 2,
           sliceLabelPadding: 12,
-          subSlicePadAngle: 2,
           // TODO: check why we need to pass dummy color
           itemMarker: { size: 80, colorScheme: { categorical: ["#20c72e", "dummy_don_not_ask", "#ff4800"] } },
         },

@@ -42,12 +42,12 @@ export type RadarPieConfig = {
 
 export const DEFAULT_RADAR_PIE_CONFIG: RadarPieConfig = {
   outerRadius: 250,
-  innerRadius: 0,
+  innerRadius: 2,
 
-  minSubSliceAngle: 12, // in degrees
+  minSubSliceAngle: 360, // in degrees. 360 results in equal subSlice angles
 
   subSlicePadAngle: 0, // in degrees
-  slicePadAngle: 1,
+  slicePadAngle: 0,
 
   minRingRadius: 30,
   ringPadding: 0,

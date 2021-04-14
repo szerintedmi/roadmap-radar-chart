@@ -23,7 +23,7 @@ body {
 }
 
 .ring-legend-text {
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 /* .legend-item-markers-group {
@@ -37,8 +37,9 @@ body {
 
 .radar-segment-arc {
   fill: #1795d4;
-  stroke: #f5f5f5;
-  stroke-width: 1px;
+  stroke: none;
+  /* stroke: #f5f5f5;
+  stroke-width: 1px; */
 }
 
 .radar-tooltip {
@@ -134,13 +135,13 @@ body {
 }
 
 .radar-slice-separator-line {
-  stroke: #dff9ff; /*#196b98;*/
+  stroke: #f5f5f5; /* #dff9ff #196b98;*/
   stroke-width: 4;
   opacity: 1;
 }
 
 .radar-subSlice-separator-line {
-  stroke: #196b98; /* #dff9ff;*/
+  stroke: #dff9ff; /* #f5f5f5 #196b98;*/
   stroke-width: 1;
   opacity: 1;
 }

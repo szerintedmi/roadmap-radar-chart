@@ -27,27 +27,34 @@ const CONFIG: RecursivePartial<RadarConfig> = {
     // padding: 100,
   },
   pie: {
-    // marker size and symbol
+    /////// marker size and symbol
     // itemMarker: { size: 40, symbolType: d3.symbolCross },
     /////// Empty middle
     // innerRadius: 10,
     /////// space between rings
     // ringPadding: 5,
     /////// the smallest angle (even for empty sub-slices). Tip: use 360 for equal size sub slices
-    // minSubSliceAngle: 30,
-    /////// padding between slices (in degrees)
-    // slicePadAngle: 1,
-    /////// padding between subSlices (in degrees)
-    // subSlicePadAngle: 1,
+    // minSubSliceAngle: 12,
     /////// padding around slice and sub-slice labels
     // sliceLabelPadding: 8,
     // subSliceLabelPadding: 4,
   },
   itemLegend: {
+    // position legend manually (center of svg: 0,0)
+    // pos: { x: 400, y: 0 },
     /////// Increase spacing between legend items
     // itemSpacing: 25,
     /////// Increase padding around legend
     // bBoxPadding: 20,
+  },
+  ringLegend: {
+    /////// position legend manually (center of svg: 0,0)
+    // pos: { x: 400, y: 0 },
+    /////// start and end angle of ring legend circles. 0 => noon, 90 = 3 o'clock
+    // startAngle: 0,
+    // endAngle: 90,
+    /////// size of ring legend (1 = same as main pie)
+    // scale: 0.3,
   },
 };
 
