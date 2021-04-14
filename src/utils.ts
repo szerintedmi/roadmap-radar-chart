@@ -54,35 +54,33 @@ export function nestedAssign<T extends Object, S extends Object>(_target: T, sou
 
 /**
  * Proportionally scales an array of numbers so total of the items will be equal to the provided target total value.
- *   NB: If a minValue is provided then the proportion of those items will higher in the result than the input
  *
  * @export
  * @param {number[]} items
  * @param {number} targetTotal
- * @param {number} [minValue=0]
- * @param {number} [iterationCt=0]
+ * @param {number} [targetMinValue=0]
  * @returns
  */
-export function scaleProportional(items: number[], targetTotal: number, minValue: number = 0, iterationCt: number = 0) {
-  const RECURSION_LIMIT = 3;
-
+export function scaleProportional(items: number[], targetTotal: number, targetMinValue: number = 0) {
+  const PRECISION = 10000;
   const itemsSum = items.reduce((a, b) => a + b, 0);
   const scaled = items.map((r, i, a) => (targetTotal * r) / itemsSum);
 
-  const scaledMin = scaled.map((i) => Math.max(i, minValue));
+  const scaledMin = scaled.map((i) => Math.max(i, targetMinValue));
   const scaledMinSum = scaledMin.reduce((a, b) => a + b, 0);
   const addedSum = scaledMinSum - targetTotal;
 
-  const aboveMinSum = scaled.filter((i) => i > minValue).reduce((a, b) => a + b, 0);
+  const aboveMinSum = scaled.filter((i) => i > targetMinValue).reduce((a, b) => a + b, 0);
   const adjustmentRatio = addedSum / aboveMinSum;
 
-  let scaledMinAdjusted = scaledMin.map((it) => (it <= minValue ? it : Math.max(it - it * adjustmentRatio, minValue)));
+  let scaledMinAdjusted = scaledMin.map((it) =>
+    it <= targetMinValue ? it : Math.max(it - it * adjustmentRatio, targetMinValue)
+  );
 
   const adjustedSum = scaledMinAdjusted.reduce((a, b) => a + b);
 
-  if (adjustedSum > targetTotal && iterationCt < RECURSION_LIMIT) {
-    iterationCt++;
-    scaledMinAdjusted = scaleProportional(scaledMinAdjusted, targetTotal, minValue, iterationCt);
+  if (Math.round(adjustedSum * PRECISION) > Math.round(targetTotal * PRECISION)) {
+    scaledMinAdjusted = scaleProportional(scaledMinAdjusted, targetTotal);
   }
 
   return scaledMinAdjusted;
