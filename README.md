@@ -12,21 +12,15 @@ A radar chart to generate an overview of your roadmap or tech radar.
   - your timescale/ring classification (eg. Now/Next/Later, Q1/Q2/Q3/Q4, adopt/trial/asses/hold etc.) => rings
 - Generates tooltips for each item
 - Reads data from CSV or JSON. _Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)_
-- Highly customizable:
+- Customizable:
   - colors, fonts etc. via [style.css](src/style.css)
   - layout and item markers via RadarConfig. See examples below and in [index.ts](src/index.ts)
 
-## More Examples
-
-### Tooltips
-
-<img src="docs/exampleImages/toolTipExample.png" alt="Tooltip example" width="300"/>
-
-Tooltip layout is configurable in [style.css](src/style.css)
+## Examples
 
 ### Tech radar
 
-ThoughtWorks Technology Radar vol 23
+ThoughtWorks Technology Radar vol 23 - notice that sub-slices are optional.
 
 [Live view](https://radarchart.netlify.app/?ex=4)
 
@@ -70,6 +64,32 @@ The simplest way to add data is via a google spreadsheet:
 
     Note: Radar Chart will reflect changes in your google sheet after reload. Published google sheets take sometime to reflect the changes just be patient and keep reloading.
 
+## Customizing
+
+- colors, fonts etc. via [style.css](src/style.css)
+- layout and item markers via RadarConfig. See examples in [index.ts](src/index.ts)
+
+### Tooltips
+
+<img src="docs/exampleImages/toolTipExample.png" alt="Tooltip example" width="300"/>
+
+Tooltip layout is configurable in [style.css](src/style.css)
+
+### Sub-slice sizing: equal vs. proportional
+
+Sub-slices are sized equally by default so it's apparent when some sub-slices have much less items than others.
+
+If you have too many items in some sub slices compered to other sub-slices then you might want to allow proportional sub slice sizing with `radarConfig.pie.minSubSliceAngle`
+![minSubSliceAngle example](docs/exampleImages/minSubSliceAngleExample.png)
+
+### Ring sizing: equal vs. proportional
+
+Rings are sized proportional to the number of items in each ring by default. You can adjust the minimum ring radius with `radarConfig.pie.minRingRadius`
+
+If you want the rings to have equal sizes then set `minRingRadius` to a number which is higher than the total radius.
+
+![minRingRadius example](docs/exampleImages/minRingRadiusExample.png)
+
 ## Usage in your code
 
 For more details (eg. `RadarConfig` tips, error handling etc.) see [index.ts](src/index.ts)
@@ -85,7 +105,7 @@ const svg = d3
   .attr("viewBox", `0 0 900 500`);
 
 //////////////////////////////////////////////////////////////////////////
-// Setup data source - replace with your own
+// Setup data source. You can pass an external URL of a CSV file as well
 const radarDs = new SingleDsvDataSource("./exampleData/TW_TechRadar_Vol23.csv");
 
 //////////////////////////////////////////////////////////////////////////
