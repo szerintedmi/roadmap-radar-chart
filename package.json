@@ -10,6 +10,7 @@
         "start:development": "yarn cross-env NODE_ENV=development webpack serve",
         "start:production": "yarn cross-env NODE_ENV=production webpack serve --progress",
         "test": "jest",
+        "test:ci": "jest --ci --reporters='default' --reporters='./.github/github-actions-reporter'",
         "build": "yarn build:development",
         "build:development": "yarn cross-env NODE_ENV=development webpack ",
         "build:production": "yarn cross-env NODE_ENV=production webpack --progress"
