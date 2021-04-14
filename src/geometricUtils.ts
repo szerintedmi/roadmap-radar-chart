@@ -3,7 +3,7 @@
 //        - run polyfill from.babelrc?
 //        - get rid of geometric lib (use d3.polygon* fxs for bBox)
 //        - get rid of AdaptiveLinearization lib, use d3.geo instead
-import * as SVGPath from "svgpath";
+import SVGPath from "svgpath";
 const AdaptiveLinearization = require("adaptive-linearization");
 import * as geometric from "geometric";
 import * as d3 from "d3";
