@@ -111,7 +111,7 @@ export abstract class RadarDataSource {
     this.radarInput.slices
       .filter((slice) => !slice.subSlices || !Array.isArray(slice.subSlices) || slice.subSlices.length === 0)
       .forEach((sliceWithoutSubSlice) => {
-        sliceWithoutSubSlice.subSlices = [RadarDataSource.cleanse({ id: sliceWithoutSubSlice.id })];
+        sliceWithoutSubSlice.subSlices = [{ id: sliceWithoutSubSlice.id + "/" }];
       });
 
     // fill in slice id or subSliceId for every item
@@ -129,7 +129,7 @@ export abstract class RadarDataSource {
       } else if ("sliceId" in inputItem) {
         // subSliceId is optional , use sliceId from item to refer to the dummy subSlice created in slice
         sliceId = inputItem.sliceId;
-        subSliceId = inputItem.sliceId;
+        subSliceId = inputItem.sliceId + "/";
       } else {
         // TODO: test if we need to throw here or it will be caught by validateRadarContent()
       }
@@ -140,7 +140,7 @@ export abstract class RadarDataSource {
     });
 
     // extract all subSlices from under slices input (slices.subSlices[]) & calculate itemCount for each subSlice
-    const subSlices = this.radarInput.slices
+    const subSlices: CatInfoSubSlice[] = this.radarInput.slices
       .filter((slice) => Array.isArray(slice.subSlices))
       .map((slice) =>
         slice.subSlices.map((subSlice) =>
@@ -172,7 +172,7 @@ export abstract class RadarDataSource {
 
             const subSlice: SubSliceProcessed = Object.assign({}, subSliceInput, {
               sliceId: slice.id,
-              isDummy: slice.id === subSliceInput.id, // TODO: do it nicer, mark it when we create the dummy subSlice
+              isDummy: slice.id + "/" === subSliceInput.id, // TODO: do it nicer, mark it when we create the dummy subSlice
               segments,
             });
 
