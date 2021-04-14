@@ -42,7 +42,12 @@ export type CatInfo = ItemBase & {
 };
 
 export type SegmentProcessed = { ringId: string; ringLevel: number; items: RadarItemProcessed[] };
-export type SubSliceProcessed = ItemBase & { sliceId: string; isDummy: boolean; segments: SegmentProcessed[] };
+export type SubSliceProcessed = ItemBase & {
+  sliceId: string;
+  idxInSlice: number;
+  isDummy: boolean;
+  segments: SegmentProcessed[];
+};
 
 export type SliceProcessed = CatInfo & { subSlices: SubSliceProcessed[] };
 export type CatInfoSubSlice = CatInfo & { sliceId: string };
@@ -155,7 +160,7 @@ export abstract class RadarDataSource {
     // populate slices: subSlices, segments and calculate itemCount for each slice
     const slices: SliceProcessed[] = this.radarInput.slices.map((slice) => {
       const subSlices: SubSliceProcessed[] = Array.isArray(slice.subSlices)
-        ? slice.subSlices.map((subSliceInput) => {
+        ? slice.subSlices.map((subSliceInput, subSliceIdx) => {
             const segments: SegmentProcessed[] = this.radarInput.rings.map((ring, idx) => {
               const items: RadarItemProcessed[] = radarItems.filter(
                 (it) => it.subSliceId === subSliceInput.id && it.ringId == ring.id
@@ -172,6 +177,7 @@ export abstract class RadarDataSource {
 
             const subSlice: SubSliceProcessed = Object.assign({}, subSliceInput, {
               sliceId: slice.id,
+              idxInSlice: subSliceIdx,
               isDummy: slice.id + "/" === subSliceInput.id, // TODO: do it nicer, mark it when we create the dummy subSlice
               segments,
             });

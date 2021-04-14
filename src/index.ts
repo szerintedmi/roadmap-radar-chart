@@ -34,7 +34,9 @@ const CONFIG: RecursivePartial<RadarConfig> = {
     /////// space between rings
     // ringPadding: 5,
     /////// the smallest angle (even for empty sub-slices). Tip: use 360 for equal size sub slices
-    // minSubSliceAngle: 360,
+    // minSubSliceAngle: 30,
+    /////// padding between slices (in degrees)
+    // slicePadAngle: 1,
     /////// padding between subSlices (in degrees)
     // subSlicePadAngle: 1,
     /////// padding around slice and sub-slice labels

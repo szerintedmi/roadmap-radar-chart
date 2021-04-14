@@ -134,7 +134,13 @@ body {
 }
 
 .radar-slice-separator-line {
-  stroke: #196b98;
-  stroke-width: 2;
+  stroke: #dff9ff; /*#196b98;*/
+  stroke-width: 4;
+  opacity: 1;
+}
+
+.radar-subSlice-separator-line {
+  stroke: #196b98; /* #dff9ff;*/
+  stroke-width: 1;
   opacity: 1;
 }

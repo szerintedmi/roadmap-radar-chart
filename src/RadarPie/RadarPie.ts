@@ -21,9 +21,11 @@ export type RadarPieConfig = {
 
   minSubSliceAngle: number; // in degrees
 
+  slicePadAngle: number;
   subSlicePadAngle: number;
 
   sliceDividerOutFlowLength: number;
+  subSliceDividerOutFlowLength: number;
 
   sliceLabelDistance: number;
   subSliceLabelDistance: number;
@@ -44,7 +46,8 @@ export const DEFAULT_RADAR_PIE_CONFIG: RadarPieConfig = {
 
   minSubSliceAngle: 12, // in degrees
 
-  subSlicePadAngle: 0.2, // in degrees
+  subSlicePadAngle: 0, // in degrees
+  slicePadAngle: 1,
 
   minRingRadius: 30,
   ringPadding: 0,
@@ -52,6 +55,7 @@ export const DEFAULT_RADAR_PIE_CONFIG: RadarPieConfig = {
   ringMaxOpacity: 1,
 
   sliceDividerOutFlowLength: 0,
+  subSliceDividerOutFlowLength: 0,
 
   sliceLabelDistance: 60,
   subSliceLabelDistance: 10,
@@ -70,22 +74,6 @@ export interface RadarItem extends RadarItemProcessed {
   y?: number;
 }
 
-export interface TextPlacement {
-  hAnchor: "middle" | "start" | "end";
-
-  // http://bl.ocks.org/eweitnauer/7325338
-  vAnchor:
-    | "baseline"
-    | "alphabetical"
-    | "ideographic"
-    | "hanging"
-    | "mathematical"
-    | "middle"
-    | "central"
-    | "text-before-edge"
-    | "text-after-edge"; // "middle" | "top" | "bottom";
-}
-
 interface LabelData {
   // middle of the arc in subSliceLabelDistance or sliceLabel distance from the outer perimeter
   // actual anchoring position of the label is calculated after rendering (based on textAnchor and label bBox)
@@ -93,11 +81,11 @@ interface LabelData {
   y: number;
   bBoxPadding: number;
   labelPlacement: TextPlacement;
+  dividerLine: { x1: number; y1: number; x2: number; y2: number };
 }
 
 interface SliceLabelData extends LabelData {
   midAngle: number;
-  dividerLine: { x1: number; y1: number; x2: number; y2: number };
 }
 
 export interface Segment extends SegmentProcessed {
@@ -198,9 +186,11 @@ export class RadarPie extends D3Element {
       arc.innerRadius = this.config.innerRadius;
       arc.outerRadius = this.config.outerRadius;
 
-      const subSlice = this.radarContent.slices
-        .find((slice) => arc.data.sliceId === slice.id)
-        .subSlices.find((subSlice) => subSlice.id === arc.data.id);
+      const slice = this.radarContent.slices.find((slice) => arc.data.sliceId === slice.id);
+      const subSliceIdx = slice.subSlices.findIndex((subSlice) => subSlice.id === arc.data.id);
+      const subSlice = slice.subSlices[subSliceIdx];
+
+      arc.startAngle += subSliceIdx === 0 ? degToRad(this.config.slicePadAngle) : 0;
 
       subSlice.arcParams = arc;
 
@@ -215,6 +205,17 @@ export class RadarPie extends D3Element {
           -1 *
           (subSlice.arcParams.outerRadius + this.config.subSliceLabelDistance) *
           Math.cos((subSlice.arcParams.endAngle - subSlice.arcParams.startAngle) / 2 + subSlice.arcParams.startAngle),
+
+        dividerLine: {
+          x1: Math.cos(subSlice.arcParams.startAngle - Math.PI / 2) * subSlice.arcParams.innerRadius,
+          y1: Math.sin(subSlice.arcParams.startAngle - Math.PI / 2) * subSlice.arcParams.innerRadius,
+          x2:
+            Math.cos(subSlice.arcParams.startAngle - Math.PI / 2) *
+            (subSlice.arcParams.outerRadius + this.config.subSliceDividerOutFlowLength),
+          y2:
+            Math.sin(subSlice.arcParams.startAngle - Math.PI / 2) *
+            (subSlice.arcParams.outerRadius + this.config.subSliceDividerOutFlowLength),
+        },
       };
 
       ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,8 +249,8 @@ export class RadarPie extends D3Element {
 
         midAngle,
         dividerLine: {
-          x1: Math.cos(firstArcParams.startAngle - Math.PI / 2) * firstArcParams.innerRadius,
-          y1: Math.sin(firstArcParams.startAngle - Math.PI / 2) * firstArcParams.innerRadius,
+          x1: Math.cos(firstArcParams.startAngle - Math.PI / 2), //* firstArcParams.innerRadius,
+          y1: Math.sin(firstArcParams.startAngle - Math.PI / 2), //* firstArcParams.innerRadius,
           x2:
             Math.cos(firstArcParams.startAngle - Math.PI / 2) *
             (firstArcParams.outerRadius + this.config.sliceDividerOutFlowLength),
@@ -317,6 +318,28 @@ export class RadarPie extends D3Element {
       );
 
     ////////////////////////////////////////////////////////////////////////
+    //  add subSlice separator lines
+
+    // TODO: make subSlice node the same in radarContent.slices so it's not needed
+    const subSlices: SubSlice[] = this.radarContent.slices.reduce((acc, slice) => {
+      acc.push(...slice.subSlices);
+      return acc;
+    }, []);
+
+    sliceSepGroup
+      .selectAll(".slice-separator-group")
+      .data(subSlices.filter((subSlice) => subSlice.idxInSlice !== 0))
+      .join((enter) =>
+        enter
+          .append("line")
+          .classed("radar-subSlice-separator-line", true)
+          .attr("x1", (d) => d.labelData.dividerLine.x1)
+          .attr("y1", (d) => d.labelData.dividerLine.y1)
+          .attr("x2", (d) => d.labelData.dividerLine.x2)
+          .attr("y2", (d) => d.labelData.dividerLine.y2)
+      );
+
+    ////////////////////////////////////////////////////////////////////////
     //  add slice separator lines
     sliceSepGroup
       .selectAll(".slice-separator-group")
@@ -333,12 +356,6 @@ export class RadarPie extends D3Element {
 
     ////////////////////////////////////////////////////////////////////////
     //  add subSlices labels
-
-    // TODO: make subSlice node the same in radarContent.slices so it's not needed
-    const subSlices: SubSlice[] = this.radarContent.slices.reduce((acc, slice) => {
-      acc.push(...slice.subSlices);
-      return acc;
-    }, []);
 
     subSliceLabelGroup
       .selectAll("svg")

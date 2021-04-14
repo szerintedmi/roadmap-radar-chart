@@ -11,7 +11,7 @@ import { ItemMarker } from "./ItemMarker";
 import { RingInfo, Segment } from "./RadarPie";
 
 const SYMBOL_BOUND_RADIUS = 6;
-const PADDING_ANGLE = (2 * Math.PI) / 180;
+const PADDING_ANGLE = (3 * Math.PI) / 180;
 const PAD_INNER_RADIUS = SYMBOL_BOUND_RADIUS;
 const PAD_OUTER_RADIUS = -SYMBOL_BOUND_RADIUS;
 
