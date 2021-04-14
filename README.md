@@ -11,7 +11,7 @@ A radar chart to generate an overview of your roadmap or tech radar.
   - optional sub grouping (eg. outcomes) => subSlices
   - your timescale/ring classification (eg. Now/Next/Later, Q1/Q2/Q3/Q4, adopt/trial/asses/hold etc.) => rings
 - Generates tooltips for each item
-- Reads data from CSV or JSON. _Get in touch if you need a different source for your use case (eg. Trello, Google Spreadsheet, Jira etc.)_
+- Reads data from CSV, Google sheet (via CSV publish) or JSON. _Get in touch if you need a different source for your use case (eg. Trello, Jira etc.)_
 - Customizable:
   - colors, fonts etc. via [style.css](src/style.css)
   - layout and item markers via RadarConfig. See examples below and in [index.ts](src/index.ts)
