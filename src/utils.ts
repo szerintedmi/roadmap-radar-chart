@@ -87,38 +87,50 @@ export function scaleProportional(items: number[], targetTotal: number, minValue
 
   return scaledMinAdjusted;
 }
-
-export function calculateAnchorPlacement(startOrMidAngle: number, endAngle?: number): TextPlacement {
+/**
+ *  Calculate label horizontal and vertical anchor position placement based on which part of a circle is the label
+ *   If both startOrMidAngle and endAngle provided it calculates the middle of the angles.
+ *   If only startOrMidAngle provided it uses it as the middle angle.
+ *
+ * @export
+ * @param {number} startOrMidAngle
+ * @param {number} [endAngle]
+ * @param {{h: number; v: number}} [cutOffDegree={ h: 7, v: 45 }]
+ *                                 h: from which angle switch b/w middle and start/end
+ *                              horizontal anchor placement at the top/bottom of the circle
+ *                          v: from which angle switch b/w baseline / hanging / middle at the right/left of the circle
+ * @returns {TextPlacement}
+ */
+export function calculateAnchorPlacement(
+  startOrMidAngle: number,
+  endAngle?: number,
+  cutOffDegree: { h: number; v: number } = { h: 7, v: 45 }
+): TextPlacement {
   {
     let rads: number;
-    const H_CUT_OFF_DEGREE = 10;
-    const V_CUT_OFF_DEGREE = 45;
 
     if (!endAngle) rads = startOrMidAngle;
     else rads = (endAngle - startOrMidAngle) / 2 + startOrMidAngle;
 
     let anchor = <TextPlacement>{};
     // circle top section
-    if (rads > degToRad(360 - H_CUT_OFF_DEGREE) || rads < degToRad(H_CUT_OFF_DEGREE)) anchor.hAnchor = "middle";
+    if (rads > degToRad(360 - cutOffDegree.h) || rads < degToRad(cutOffDegree.h)) anchor.hAnchor = "middle";
     // bottom section
-    else if (rads > degToRad(180 - H_CUT_OFF_DEGREE) && rads < degToRad(180 + H_CUT_OFF_DEGREE))
-      anchor.hAnchor = "middle";
+    else if (rads > degToRad(180 - cutOffDegree.h) && rads < degToRad(180 + cutOffDegree.h)) anchor.hAnchor = "middle";
     // right section
-    else if (rads >= degToRad(H_CUT_OFF_DEGREE) && rads <= degToRad(180 - H_CUT_OFF_DEGREE)) anchor.hAnchor = "start";
+    else if (rads >= degToRad(cutOffDegree.h) && rads <= degToRad(180 - cutOffDegree.h)) anchor.hAnchor = "start";
     // left section
-    else if (rads >= degToRad(180 + H_CUT_OFF_DEGREE) && rads <= degToRad(360 - H_CUT_OFF_DEGREE))
-      anchor.hAnchor = "end";
+    else if (rads >= degToRad(180 + cutOffDegree.h) && rads <= degToRad(360 - cutOffDegree.h)) anchor.hAnchor = "end";
     else throw new Error("Invalid rads for horizontal calculateAnchorPlacement: " + rads);
 
     // circle top section
-    if (rads > degToRad(360 - V_CUT_OFF_DEGREE) || rads < degToRad(V_CUT_OFF_DEGREE)) anchor.vAnchor = "baseline";
+    if (rads > degToRad(360 - cutOffDegree.v) || rads < degToRad(cutOffDegree.v)) anchor.vAnchor = "baseline";
     // bottom section
-    else if (rads > degToRad(180 - V_CUT_OFF_DEGREE) && rads < degToRad(180 + V_CUT_OFF_DEGREE))
-      anchor.vAnchor = "hanging";
+    else if (rads > degToRad(180 - cutOffDegree.v) && rads < degToRad(180 + cutOffDegree.v)) anchor.vAnchor = "hanging";
     // right section
-    else if (rads >= degToRad(V_CUT_OFF_DEGREE) && rads <= degToRad(180 - V_CUT_OFF_DEGREE)) anchor.vAnchor = "middle";
+    else if (rads >= degToRad(cutOffDegree.v) && rads <= degToRad(180 - cutOffDegree.v)) anchor.vAnchor = "middle";
     // left section
-    else if (rads >= degToRad(180 + V_CUT_OFF_DEGREE) && rads <= degToRad(360 - V_CUT_OFF_DEGREE))
+    else if (rads >= degToRad(180 + cutOffDegree.v) && rads <= degToRad(360 - cutOffDegree.v))
       anchor.vAnchor = "middle";
     else throw new Error("Invalid rads for vertical calculateAnchorPlacement: " + rads);
 
