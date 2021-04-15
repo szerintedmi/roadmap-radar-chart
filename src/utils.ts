@@ -35,7 +35,11 @@ export type RecursivePartial<T> = {
  * @returns {T}
  */
 export function nestedAssign<T extends Object, S extends Object>(_target: T, source: S): T {
+  if (!Array.isArray(source) && typeof source !== "object" && source !== undefined)
+    throw new Error("nestedAssign received an invalid source type: " + typeof source);
+
   const target = Object.assign({}, _target);
+
   if (source) {
     Object.keys(source ? source : {}).forEach((sourceKey) => {
       if (
@@ -91,9 +95,9 @@ export function scaleProportional(items: number[], targetTotal: number, targetMi
  *   If only startOrMidAngle provided it uses it as the middle angle.
  *
  * @export
- * @param {number} startOrMidAngle
- * @param {number} [endAngle]
- * @param {{h: number; v: number}} [cutOffDegree={ h: 7, v: 45 }]
+ * @param {number} startOrMidAngle in rads
+ * @param {number} [endAngle] in rads
+ * @param {{h: number; v: number}} [cutOffDegree={ h: 7, v: 45 }] cutoff values are in degrees
  *                                 h: from which angle switch b/w middle and start/end
  *                              horizontal anchor placement at the top/bottom of the circle
  *                          v: from which angle switch b/w baseline / hanging / middle at the right/left of the circle
@@ -110,6 +114,8 @@ export function calculateAnchorPlacement(
     if (!endAngle) rads = startOrMidAngle;
     else rads = (endAngle - startOrMidAngle) / 2 + startOrMidAngle;
 
+    if (rads > degToRad(360) || rads < 0) throw new Error("Invalid rads for calculateAnchorPlacement: " + rads);
+
     let anchor = <TextPlacement>{};
     // circle top section
     if (rads > degToRad(360 - cutOffDegree.h) || rads < degToRad(cutOffDegree.h)) anchor.hAnchor = "middle";
@@ -119,7 +125,6 @@ export function calculateAnchorPlacement(
     else if (rads >= degToRad(cutOffDegree.h) && rads <= degToRad(180 - cutOffDegree.h)) anchor.hAnchor = "start";
     // left section
     else if (rads >= degToRad(180 + cutOffDegree.h) && rads <= degToRad(360 - cutOffDegree.h)) anchor.hAnchor = "end";
-    else throw new Error("Invalid rads for horizontal calculateAnchorPlacement: " + rads);
 
     // circle top section
     if (rads > degToRad(360 - cutOffDegree.v) || rads < degToRad(cutOffDegree.v)) anchor.vAnchor = "baseline";
@@ -130,7 +135,6 @@ export function calculateAnchorPlacement(
     // left section
     else if (rads >= degToRad(180 + cutOffDegree.v) && rads <= degToRad(360 - cutOffDegree.v))
       anchor.vAnchor = "middle";
-    else throw new Error("Invalid rads for vertical calculateAnchorPlacement: " + rads);
 
     return anchor;
   }
