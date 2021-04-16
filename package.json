@@ -22,7 +22,7 @@
         "@types/d3": "6.3.0",
         "@types/geometric": "2.2.0",
         "adaptive-linearization": "1.0.3",
-        "d3": "6.6.2",
+        "d3": "6.7.0",
         "geometric": "2.2.6",
         "path-data-polyfill": "1.0.3",
         "svgpath": "2.3.1",
