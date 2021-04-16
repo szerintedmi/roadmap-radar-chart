@@ -261,10 +261,10 @@ export function distributePointsWithinBoundary(boundaryPolygonPoints: Point[], p
       "Try to adjust pie settings (eg. minSubSliceAngle)";
 
     console.error(errorText);
-    console.log("iterationCount", iterationCount);
-    console.log("bBox", bBox);
-    console.log("Points to be placed", pointsCount, "minPoints", minPoints);
-    console.log("points inside:", pointsInside.length);
+    console.error("iterationCount", iterationCount);
+    console.error("bBox", bBox);
+    console.error("Points to be placed", pointsCount, "minPoints", minPoints);
+    console.error("points inside:", pointsInside.length);
     throw new RadarError(errorText);
   }
 

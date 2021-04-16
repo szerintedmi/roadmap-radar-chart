@@ -1,4 +1,6 @@
+import { RadarError } from "./Errors";
 import { distributePointsWithinBoundary, flattenSVGPath } from "./geometricUtils";
+import { expectToThrowMuteErrorLog } from "./jest.helpers";
 
 // For visual check / generate points: https://stackblitz.com/edit/curve-linearizaton?file=index.ts
 describe("test flattenSVGPath fx", () => {
@@ -47,5 +49,15 @@ describe("test distributePointsWithinBoundary fx", () => {
       [172.5, 170],
       [114.5, 226],
     ]);
+  });
+
+  it("should throw when there is no space within the polygon", () => {
+    const pathString = "M 100,100 L 100,120 100,100  Z";
+    const polyPoints = flattenSVGPath(pathString, {
+      approximationScale: 0.01,
+    });
+
+    // expect(distributePointsWithinBoundary(polyPoints, 10)).toThrow(RadarError);
+    expectToThrowMuteErrorLog(() => expect(distributePointsWithinBoundary(polyPoints, 10)), RadarError);
   });
 });
