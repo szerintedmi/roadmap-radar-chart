@@ -3,7 +3,7 @@
 //        - get rid of geometric lib or use it for everything here instead of d3?
 //        - maybe get rid of AdaptiveLinearization lib, use d3.geo instead if it results smaller bundle
 import SVGPath from "svgpath";
-const AdaptiveLinearization = require("adaptive-linearization");
+import AdaptiveLinearization from "adaptive-linearization";
 import * as geometric from "geometric";
 import * as d3 from "d3";
 
