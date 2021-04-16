@@ -1,8 +1,7 @@
 // TODO:
-//        - get rid of NewSVGPathElement: extend SVGPathElement type globally
 //        - run polyfill from.babelrc?
-//        - get rid of geometric lib (use d3.polygon* fxs for bBox)
-//        - get rid of AdaptiveLinearization lib, use d3.geo instead
+//        - get rid of geometric lib or use it for everything here instead of d3?
+//        - maybe get rid of AdaptiveLinearization lib, use d3.geo instead if it results smaller bundle
 import SVGPath from "svgpath";
 const AdaptiveLinearization = require("adaptive-linearization");
 import * as geometric from "geometric";
@@ -18,20 +17,6 @@ export type PointDistance = {
   point: Point;
   distance: number;
 };
-
-interface SVGPathDataSettings {
-  normalize: boolean;
-}
-
-interface SVGPathSegment {
-  type: string; // DOMString
-  values: number[];
-}
-
-export interface NewSVGPathElement extends SVGPathElement {
-  getPathData(settings?: SVGPathDataSettings): SVGPathSegment[];
-  setPathData(pathData: SVGPathSegment[]): void;
-}
 
 export type BBox = {
   topLeft: Point;
@@ -125,10 +110,13 @@ export function getPointsDistance(a: Point, b: Point): number {
 }
 
 export function getClosestPointOnPath(pathString: string, point: Point): PointDistance {
-  const pathNode = (d3
-    .create("svg:path")
-    .call((el) => el.attr("d", pathString))
-    .node() as unknown) as NewSVGPathElement; //  NewSVGPathElement is a workaround to make typing work with path-data-polyfill
+  // const pathNode = d3
+  //   .create("svg:path")
+  //   .call((el) => el.attr("d", pathString))
+  //   .node() as SVGPathElement; //  NewSVGPathElement is a workaround to make typing work with path-data-polyfill
+
+  const pathNode = window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+  pathNode.setAttributeNS(null, "d", pathString);
 
   const pathLength = pathNode.getTotalLength();
   let precision = (pathLength / pathNode.getPathData().length) * 0.125; // getPathData is new in SVG spec: see polyfill import
