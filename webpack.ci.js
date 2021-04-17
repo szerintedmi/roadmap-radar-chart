@@ -12,7 +12,7 @@ module.exports = merge(common, {
     new RelativeCiAgentWebpackPlugin(), // Write out stats file to build directory.
 
     new StatsWriterPlugin({
-      filename: "stats.json",
+      filename: "webpack-stats.json",
       stats: {
         context: "./src", // optional, will improve readability of the paths
         assets: true,
