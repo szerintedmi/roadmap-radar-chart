@@ -16,7 +16,8 @@
         "test:ci": "jest --ci --reporters='default' --reporters='./.github/github-actions-reporter'",
         "build": "yarn build:production",
         "build:development": "yarn webpack --config webpack.dev.js",
-        "build:production": "yarn webpack --config webpack.prod.js"
+        "build:production": "yarn webpack --config webpack.prod.js",
+        "build:ci": "yarn webpack --config webpack.ci.js"
     },
     "dependencies": {
         "@types/d3": "6.3.0",
@@ -29,6 +30,7 @@
         "typescript": "4.2.4"
     },
     "devDependencies": {
+        "@relative-ci/agent": "1.5.0",
         "@types/jest": "26.0.22",
         "@typescript-eslint/eslint-plugin": "4.22.0",
         "@typescript-eslint/parser": "4.22.0",
@@ -46,10 +48,10 @@
         "ts-jest": "26.5.5",
         "ts-loader": "8.1.0",
         "webpack": "5.33.2",
-        "webpack-bundle-analyzer": "4.4.1",
         "webpack-cli": "4.6.0",
         "webpack-dev-server": "3.11.2",
-        "webpack-merge": "5.7.3"
+        "webpack-merge": "5.7.3",
+        "webpack-stats-plugin": "1.0.3"
     },
     "staticFiles": {
         "staticPath": "exampleData",
