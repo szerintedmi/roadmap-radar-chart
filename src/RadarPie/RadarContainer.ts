@@ -147,6 +147,7 @@ export class RadarContainer {
     return el
       .transition()
       .duration(200)
-      .attr("transform", "translate(" + transX + " " + transY + ")scale(" + scale + " " + scale + ")");
+      .attr("transform", "translate(" + transX + " " + transY + ")scale(" + scale + " " + scale + ")")
+      .on("end", () => el.dispatch("scaleToFitEnd", { bubbles: true, detail: "DDDD", cancelable: true }));
   }
 }

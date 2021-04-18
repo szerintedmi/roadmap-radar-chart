@@ -188,8 +188,8 @@ export function arrangeLabels(
     }
 
     function onEnd() {
+      containerEl.dispatch("labelsArranged", { bubbles: true, detail: { iteration: tickCount }, cancelable: true });
       resolve(containerEl);
-      console.log("Label arrangement finished after", tickCount, "iterations");
     }
   });
 }
