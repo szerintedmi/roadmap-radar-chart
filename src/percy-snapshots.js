@@ -3,9 +3,37 @@ const PercyScript = require("@percy/script");
 PercyScript.run(async (page, percySnapshot) => {
   await page.goto("http://localhost:8080/");
   await waitForEvent(page, "scaleToFitEnd");
-  await percySnapshot("default example");
+  await percySnapshot("default example"); // ex=2
 });
 
+PercyScript.run(async (page, percySnapshot) => {
+  await page.goto("http://localhost:8080?ex=1");
+  await waitForEvent(page, "scaleToFitEnd");
+  await percySnapshot("example 1");
+});
+
+PercyScript.run(async (page, percySnapshot) => {
+  await page.goto("http://localhost:8080?ex=3");
+  await waitForEvent(page, "scaleToFitEnd");
+  await percySnapshot("example 3");
+});
+
+PercyScript.run(async (page, percySnapshot) => {
+  await page.goto("http://localhost:8080?ex=4");
+  await waitForEvent(page, "scaleToFitEnd");
+  await percySnapshot("example 4");
+});
+
+PercyScript.run(async (page, percySnapshot) => {
+  await page.goto("http://localhost:8080?ex=5");
+  await waitForEvent(page, "scaleToFitEnd");
+  await percySnapshot("example 5");
+});
+
+PercyScript.run(async (page, percySnapshot) => {
+  await page.goto("http://localhost:8080/svgtest.html");
+  await percySnapshot("SVG test page");
+});
 
 /**
  * Wait for the browser to fire an event (including custom events)
