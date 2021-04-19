@@ -28,7 +28,7 @@ describe("test scaleProportional fx", () => {
 
 describe("test calculateAnchorPlacement fx", () => {
   it("should return correct anchors close to noon angle", () => {
-    expect(calculateAnchorPlacement((3 * Math.PI) / 180)).toEqual({ hAnchor: "middle", vAnchor: "baseline" });
+    expect(calculateAnchorPlacement((3 * Math.PI) / 180)).toEqual({ hAnchor: "middle", vAnchor: "alphabetic" });
   });
 
   it("should return correct anchors close to 3 o'clock angle", () => {
@@ -36,7 +36,7 @@ describe("test calculateAnchorPlacement fx", () => {
   });
 
   it("should return correct anchors close to 6 o'clock angle", () => {
-    expect(calculateAnchorPlacement((178 * Math.PI) / 180)).toEqual({ hAnchor: "middle", vAnchor: "hanging" });
+    expect(calculateAnchorPlacement((178 * Math.PI) / 180)).toEqual({ hAnchor: "middle", vAnchor: "text-before-edge" });
   });
 
   it("should return correct anchors close to 9 o'clock angle", () => {
@@ -53,7 +53,7 @@ describe("test calculateAnchorPlacement fx", () => {
   it("should return correct anchors when custom cutoffs provided", () => {
     expect(calculateAnchorPlacement((44 * Math.PI) / 180, (44 * Math.PI) / 180, { h: 45, v: 45 })).toEqual({
       hAnchor: "middle",
-      vAnchor: "baseline",
+      vAnchor: "alphabetic",
     });
   });
 

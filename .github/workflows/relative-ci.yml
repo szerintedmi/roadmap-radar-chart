@@ -1,13 +1,13 @@
-name: Tests CI
+name: Relative CI
 on: [push, pull_request]
 jobs:
-  test:
+  build_for_bundle_stats:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Test using Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: "12"
@@ -25,8 +25,12 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install packages
-        #if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --prefer-offline
 
-      - name: Run tests
-        run: yarn test:ci
+      - name: Build
+        run: yarn build:ci
+
+      - name: Relative-CI agent run
+        run: yarn relative-ci-agent
+        env:
+          RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}

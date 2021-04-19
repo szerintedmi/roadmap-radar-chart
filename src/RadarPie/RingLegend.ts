@@ -71,7 +71,7 @@ export class RingLegend extends D3Element {
 
       .classed("ring-legend-text", true)
 
-      .attr("alignment-baseline", "mathematical")
+      .attr("dominant-baseline", "central")
       .attr("text-anchor", "middle")
       .attr("x", (d) => this.arcGenerator.centroid(d)[0])
       .attr("y", (d) => this.arcGenerator.centroid(d)[1])

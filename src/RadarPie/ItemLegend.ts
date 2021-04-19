@@ -67,7 +67,7 @@ export class ItemLegend extends D3Element {
       .attr("x", this.config.itemSpacing)
       .attr("y", (d, i) => i * this.config.itemSpacing + this.config.itemSpacing / 2)
       .attr("text-anchor", "left")
-      .style("alignment-baseline", "middle");
+      .style("dominant-baseline", "middle");
 
     // legendGroup.attr("transform", `translate (${this.config.pos.x} ${this.config.pos.y})`);
 

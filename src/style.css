@@ -1,9 +1,11 @@
 /*#fed800; #d4b526;  #196b98;   #666666; #d4b526; #ed5307; #7C33A2 #dff9ff*/
 
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
 body {
   margin: 0px;
   font-size: 1em;
-  font-family: Lato;
+  font-family: "Lato", sans-serif;
 }
 
 /* .radar-div {

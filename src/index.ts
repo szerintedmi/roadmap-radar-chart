@@ -83,6 +83,11 @@ if (urlParams.singleCsvUri) {
   config = nestedAssign(example.radarConfig, CONFIG);
 }
 
+// Just as an example to listen to event which indicates that label arrangements and zooming is done.
+document.addEventListener("scaleToFitEnd", (_event) => {
+  console.log("scaleToFit finished. RadarChart rendering finished");
+});
+
 const radarContainer = new RadarContainer(config);
 
 radarContainer
