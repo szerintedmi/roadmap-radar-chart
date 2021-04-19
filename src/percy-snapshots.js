@@ -13,12 +13,6 @@ PercyScript.run(async (page, percySnapshot) => {
 });
 
 PercyScript.run(async (page, percySnapshot) => {
-  await page.goto("http://localhost:8080?ex=3");
-  await waitForEvent(page, "scaleToFitEnd");
-  await percySnapshot("example 3");
-});
-
-PercyScript.run(async (page, percySnapshot) => {
   await page.goto("http://localhost:8080?ex=4");
   await waitForEvent(page, "scaleToFitEnd");
   await percySnapshot("example 4");
