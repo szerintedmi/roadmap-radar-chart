@@ -29,7 +29,8 @@ jobs:
         run: yarn --prefer-offline
 
       - name: Launch
-        run: yarn start
+        run: yarn start &
+        run: wait-on http-get://localhost:8080
 
       - name: Percy snapshots
         uses: percy/exec-action@v0.3.1
