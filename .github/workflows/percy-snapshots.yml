@@ -32,7 +32,7 @@ jobs:
         run: yarn start &
 
       - name: wait for server launch
-        run: wait-on http-get://localhost:8080
+        run: yarn wait-on http-get://localhost:8080
 
       - name: Percy snapshots
         uses: percy/exec-action@v0.3.1
