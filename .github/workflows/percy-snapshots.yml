@@ -30,6 +30,8 @@ jobs:
 
       - name: Launch
         run: yarn start &
+
+      - name: wait for server launch
         run: wait-on http-get://localhost:8080
 
       - name: Percy snapshots
