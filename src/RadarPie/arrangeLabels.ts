@@ -80,7 +80,13 @@ export function arrangeLabels(
       };
 
       const bBoxCenter = { x: bBox.x + paddedBBox.width / 2 - padding, y: bBox.y + paddedBBox.height / 2 - padding };
-      const transformedBBoxCenter = transformElementPoint(elNode, containerEl.node(), bBoxCenter);
+      const transformedBBoxCenter = transformElementPoint(
+        // we need to pick an element within the svg container element otherwise FireFox getScreeCTM doesn't work
+        //    https://bugzilla.mozilla.org/show_bug.cgi?id=849203#c5
+        el.select("text").node() as SVGGraphicsElement,
+        containerEl.node(),
+        bBoxCenter
+      );
 
       const svgBBoxTopLeft = { x: parseFloat(el.attr("x")), y: parseFloat(el.attr("y")) };
 
@@ -188,8 +194,8 @@ export function arrangeLabels(
     }
 
     function onEnd() {
+      containerEl.dispatch("labelsArranged", { bubbles: true, detail: { iteration: tickCount }, cancelable: true });
       resolve(containerEl);
-      console.log("Label arrangement finished after", tickCount, "iterations");
     }
   });
 }

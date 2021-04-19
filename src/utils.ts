@@ -5,15 +5,14 @@ export interface TextPlacement {
 
   // http://bl.ocks.org/eweitnauer/7325338
   vAnchor:
-    | "baseline"
-    | "alphabetical"
+    | "alphabetic"
     | "ideographic"
     | "hanging"
     | "mathematical"
     | "middle"
     | "central"
     | "text-before-edge"
-    | "text-after-edge"; // "middle" | "top" | "bottom";
+    | "text-after-edge";
 }
 
 // https://stackoverflow.com/questions/47914536/use-partial-in-nested-property-with-typescript
@@ -127,9 +126,10 @@ export function calculateAnchorPlacement(
     else if (rads >= degToRad(180 + cutOffDegree.h) && rads <= degToRad(360 - cutOffDegree.h)) anchor.hAnchor = "end";
 
     // circle top section
-    if (rads > degToRad(360 - cutOffDegree.v) || rads < degToRad(cutOffDegree.v)) anchor.vAnchor = "baseline";
+    if (rads > degToRad(360 - cutOffDegree.v) || rads < degToRad(cutOffDegree.v)) anchor.vAnchor = "alphabetic";
     // bottom section
-    else if (rads > degToRad(180 - cutOffDegree.v) && rads < degToRad(180 + cutOffDegree.v)) anchor.vAnchor = "hanging";
+    else if (rads > degToRad(180 - cutOffDegree.v) && rads < degToRad(180 + cutOffDegree.v))
+      anchor.vAnchor = "text-before-edge";
     // right section
     else if (rads >= degToRad(cutOffDegree.v) && rads <= degToRad(180 - cutOffDegree.v)) anchor.vAnchor = "middle";
     // left section

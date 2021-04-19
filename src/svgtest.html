@@ -5,39 +5,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+      body {
+        margin: 0px;
+        font-size: 1em;
+        font-family: "Lato", sans-serif;
+      }
+    </style>
+
     <title>SVG test</title>
   </head>
 
   <body>
     <div>
-      <svg width="800" height="400" style="outline: 1px solid grey; font-size: 1.5em; overflow: visible">
-        <line x1="0" y1="100" x2="800" y2="100" stroke="red" />
-        <text x="0" y="100" style="dominant-baseline: baseline">Iga (baseline)</text>
-        <text x="220" y="100" style="dominant-baseline: alphabetical">Iga (alphabetical)</text>
-        <text x="440" y="100" style="dominant-baseline: text-after-edge">Iga (after-edge)</text>
+      <svg class="svg-test" width="650" height="200" style="outline: 1px solid grey; overflow: visible">
+        <line x1="0" y1="50" x2="650" y2="50" stroke="red" />
+        <text x="10" y="50" style="dominant-baseline: alphabetic">Iga (alphabetic)</text>
+        <text x="210" y="50" style="dominant-baseline: ideographic">Iga (ideographic)</text>
+        <text x="410" y="50" style="dominant-baseline: text-after-edge">Iga (text-after-edge)</text>
 
-        <line x1="0" y1="200" x2="800" y2="200" stroke="red" />
-        <text x="0" y="200" style="dominant-baseline: ideographic">Iga (ideographic)</text>
-        <text x="220" y="200" style="dominant-baseline: mathematical">Iga (mathematical)</text>
-        <text x="440" y="200" style="text-anchor: start; dominant-baseline: middle">Iga (middle)</text>
+        <line x1="0" y1="100" x2="650" y2="100" stroke="red" />
 
-        <line x1="0" y1="300" x2="800" y2="300" stroke="red" />
-        <text x="0" y="300" dominant-baseline="hanging">Iga (hanging)</text>
-        <text x="220" y="300" style="dominant-baseline: central">Iga (central)</text>
-        <text x="440" y="300" style="dominant-baseline: text-before-edge">Iga (before-edge)</text>
+        <text x="10" y="100" style="text-anchor: start; dominant-baseline: middle">Iga (middle)</text>
+        <text x="210" y="100" style="dominant-baseline: mathematical">Iga (mathematical)</text>
+        <text x="410" y="100" style="dominant-baseline: central">Iga (central)</text>
+
+        <line x1="0" y1="150" x2="650" y2="150" stroke="red" />
+        <text x="10" y="150" dominant-baseline="hanging">Iga (hanging)</text>
+        <text x="210" y="150" style="dominant-baseline: text-before-edge">Iga (before-edge)</text>
       </svg>
     </div>
 
     <div>
       <svg
-        width="800"
-        height="400"
+        width="650"
+        height="200"
         style="outline: 1px solid green; overflow: visible"
         fill="blue"
         background-color="red"
       >
         <circle cx="0" cy="0" r="2" fill="green" />
-        <g transform="translate(400,200)">
+        <g transform="translate(200,100)">
           <circle cx="0" cy="0" r="2" fill="red" />
           <svg x="100" y="100" style="outline: 1px solid blue">
             <circle cx="0" cy="0" r="5" fill="yellow" fill-opacity="0.2" />
