@@ -122,6 +122,6 @@ radarContainer.fetchData(radarDs).then(() => {
 
 _Note: an npm module is coming..._
 
-## Licence
+## License
 
-This project is licensed under the GNU Affero General Public License v3.0 license - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for details.
