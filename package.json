@@ -57,7 +57,7 @@
         "@webpack-cli/init": "1.1.3",
         "clean-webpack-plugin": "3.0.0",
         "copy-webpack-plugin": "8.1.1",
-        "css-loader": "5.2.2",
+        "css-loader": "5.2.4",
         "eslint": "7.24.0",
         "favicons": "6.2.1",
         "favicons-webpack-plugin": "5.0.2",
