@@ -1,13 +1,30 @@
 {
-    "name": "roadmap-radar",
+    "name": "roadmap-radar-chart",
+    "description": "A radar chart to generate an overview of your roadmap or tech radar.",
     "version": "0.0.1",
-    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/szerintedmi/RadarChart.git"
+    },
+    "keywords": [
+        "chart",
+        "roadmap",
+        "radar"
+    ],
+    "author": "szerintedmi@gmail.com",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/szerintedmi/RadarChart/issues"
+    },
+    "homepage": "https://github.com/szerintedmi/RadarChart",
+    "private": false,
     "sideEffects": [
         "*.css"
     ],
     "engines": {
         "node": ">=12"
     },
+    "main": "dist",
     "scripts": {
         "start": "yarn start:development",
         "start:development": "yarn webpack serve --config webpack.dev.js",
