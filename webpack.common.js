@@ -43,6 +43,13 @@ module.exports = {
         { from: "src/svgtest.html", to: "svgtest.html" },
       ],
     }),
-    new FaviconsWebpackPlugin(path.resolve(__dirname, "static/logo.png")),
+    new FaviconsWebpackPlugin({
+      logo: "./static/logo.png",
+      favicons: {
+        icons: {
+          appleStartup: false,
+        },
+      },
+    }),
   ],
 };
