@@ -19,7 +19,7 @@ jobs:
         id: is-published
 
       - name: Fail if already published
-        if: ${{ steps.is-published.outputs.published == 'false' }}
+        if: ${{ steps.is-published.outputs.published == 'true' }}
         run: exit 1
 
       - name: Setup Node.js
