@@ -74,7 +74,7 @@
     "devDependencies": {
         "@percy/script": "1.1.0",
         "@relative-ci/agent": "1.5.0",
-        "@types/jest": "26.0.22",
+        "@types/jest": "26.0.23",
         "@typescript-eslint/eslint-plugin": "4.22.0",
         "@typescript-eslint/parser": "4.22.0",
         "@webpack-cli/init": "1.1.3",
