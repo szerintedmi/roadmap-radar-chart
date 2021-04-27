@@ -1,7 +1,7 @@
 {
     "name": "roadmap-radar-chart",
     "description": "A radar chart to generate an overview of your roadmap or tech radar.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "repository": {
         "type": "git",
         "url": "https://github.com/szerintedmi/RadarChart.git"
@@ -95,5 +95,8 @@
         "webpack-dev-server": "3.11.2",
         "webpack-merge": "5.7.3",
         "webpack-stats-plugin": "1.0.3"
-    }
+    },
+    "files": [
+        "dist/"
+    ]
 }
