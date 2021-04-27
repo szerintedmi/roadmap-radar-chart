@@ -35,20 +35,20 @@ export class Example {
     {
       type: "json",
       name: "data validation example",
-      fileUri: "exampleData/validationTestData.json",
+      fileUri: "./dist/exampleData/validationTestData.json",
     },
 
-    { type: "json", name: "test example", fileUri: "exampleData/testData.json" },
+    { type: "json", name: "test example", fileUri: "./dist/exampleData/testData.json" },
 
     {
       type: "dsv",
       name: "Now/next/Later example 1",
       separator: ",",
       fileUris: {
-        slices: "./exampleData/NowNextLater 1/NowNextLater 1 - slices.csv",
-        subSlices: "./exampleData/NowNextLater 1/NowNextLater 1 - subSlices.csv",
-        rings: "./exampleData/NowNextLater 1/NowNextLater 1 - rings.csv",
-        items: "./exampleData/NowNextLater 1/NowNextLater 1 - items.csv",
+        slices: "./dist/exampleData/NowNextLater 1/NowNextLater 1 - slices.csv",
+        subSlices: "./dist/exampleData/NowNextLater 1/NowNextLater 1 - subSlices.csv",
+        rings: "./dist/exampleData/NowNextLater 1/NowNextLater 1 - rings.csv",
+        items: "./dist/exampleData/NowNextLater 1/NowNextLater 1 - items.csv",
       },
     },
 
@@ -57,10 +57,10 @@ export class Example {
       name: "Confidential example (not in repo)",
       separator: ",",
       fileUris: {
-        slices: "./exampleData/Confidential/slices.csv",
-        subSlices: "./exampleData/Confidential/subSlices.csv",
-        rings: "./exampleData/Confidential/rings.csv",
-        items: "./exampleData/Confidential/items.csv",
+        slices: "./dist/exampleData/Confidential/slices.csv",
+        subSlices: "./dist/exampleData/Confidential/subSlices.csv",
+        rings: "./dist/exampleData/Confidential/rings.csv",
+        items: "./dist/exampleData/Confidential/items.csv",
       },
       radarConfig: {
         pie: { minSubSliceAngle: 12 },
