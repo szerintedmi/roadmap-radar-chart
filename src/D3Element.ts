@@ -1,6 +1,6 @@
 export abstract class NameSpaced {
   namespace: string;
-  constructor(namespace: string = "svg:") {
+  constructor(namespace = "svg:") {
     this.namespace = namespace;
   }
 }

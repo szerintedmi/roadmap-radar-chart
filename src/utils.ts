@@ -1,4 +1,4 @@
-import { degToRad } from "./geometricUtils";
+import { degToRad } from "./geometricUtils.js";
 
 export interface TextPlacement {
   hAnchor: "middle" | "start" | "end";
@@ -64,7 +64,7 @@ export function nestedAssign<T extends Object, S extends Object>(_target: T, sou
  * @param {number} [targetMinValue=0]
  * @returns
  */
-export function scaleProportional(items: number[], targetTotal: number, targetMinValue: number = 0) {
+export function scaleProportional(items: number[], targetTotal: number, targetMinValue = 0) {
   const PRECISION = 10000;
   const itemsSum = items.reduce((a, b) => a + b, 0);
   const scaled = items.map((r, i, a) => (targetTotal * r) / itemsSum);
@@ -115,7 +115,7 @@ export function calculateAnchorPlacement(
 
     if (rads > degToRad(360) || rads < 0) throw new Error("Invalid rads for calculateAnchorPlacement: " + rads);
 
-    let anchor = <TextPlacement>{};
+    const anchor = <TextPlacement>{};
     // circle top section
     if (rads > degToRad(360 - cutOffDegree.h) || rads < degToRad(cutOffDegree.h)) anchor.hAnchor = "middle";
     // bottom section

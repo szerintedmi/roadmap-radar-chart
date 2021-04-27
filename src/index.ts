@@ -1,12 +1,11 @@
 import "./style.css";
-import * as d3 from "d3";
 
-import { DataImportError, InputDataValidationErrors } from "./Errors";
-import { Example } from "./DataSource/Example";
-import { RadarConfig, RadarContainer } from "./RadarPie/RadarContainer";
-import { nestedAssign, RecursivePartial } from "./utils";
-import { RadarDataSource } from "./DataSource/RadarDataSource";
-import { SingleDsvDataSource } from "./DataSource/SingleDsvDataSource";
+import { DataImportError, InputDataValidationErrors } from "./Errors.js";
+import { Example } from "./DataSource/Example.js";
+import { RadarConfig, RadarContainer } from "./RadarPie/RadarContainer.js";
+import { nestedAssign, RecursivePartial } from "./utils.js";
+import { RadarDataSource } from "./DataSource/RadarDataSource.js";
+import { SingleDsvDataSource } from "./DataSource/SingleDsvDataSource.js";
 
 type RadarUrlParams = {
   radarDebugMode: boolean;
@@ -15,9 +14,6 @@ type RadarUrlParams = {
 };
 
 const DEFAULT_EXAMPLE_ID = 2;
-
-const CONTAINER_WIDTH = 900;
-const CONTAINER_HEIGHT = 500;
 
 const CONFIG: RecursivePartial<RadarConfig> = {
   // most formats can be adjusted in style.css
@@ -61,12 +57,7 @@ const CONFIG: RecursivePartial<RadarConfig> = {
 const urlParams = parseUrlParams();
 window.RADAR_DEBUG_MODE = urlParams.radarDebugMode;
 
-const svg = d3
-  .select("#myRadar-div")
-  // .attr("padding-bottom", Math.round((100 * CONTAINER_HEIGHT) / CONTAINER_WIDTH) + "%") // might be needed for x-browser supp
-  .append("svg")
-  .classed("radar-svg-container", true)
-  .attr("viewBox", `0 0 ${CONTAINER_WIDTH} ${CONTAINER_HEIGHT}`);
+const svgDiv = document.getElementById("myRadar-div");
 
 //////////////////////////////////////////////////////////////////////////
 // Fetch data and create radar
@@ -84,7 +75,7 @@ if (urlParams.singleCsvUri) {
 }
 
 // Just as an example to listen to event which indicates that label arrangements and zooming is done.
-document.addEventListener("scaleToFitEnd", (_event) => {
+document.addEventListener("scaleToFitEnd", () => {
   console.log("scaleToFit finished. RadarChart rendering finished");
 });
 
@@ -93,7 +84,7 @@ const radarContainer = new RadarContainer(config);
 radarContainer
   .fetchData(radarDs)
   .then(() => {
-    return radarContainer.appendTo(svg);
+    return radarContainer.appendTo(svgDiv);
   })
 
   .catch((error) => {
@@ -113,9 +104,8 @@ radarContainer
     console.error(error);
     console.error(errorText);
 
-    d3.select(".error-div")
-      .append("p")
-      .html("<pre>" + errorText + "</pre>");
+    const errorDiv = document.getElementById("myError-div");
+    errorDiv.innerHTML += `<p><pre>${errorText}</pre></p> </p>`;
   });
 
 function parseUrlParams(): RadarUrlParams {

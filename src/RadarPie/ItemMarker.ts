@@ -1,8 +1,11 @@
-import * as d3 from "d3";
-import { NameSpaced } from "../D3Element";
-import { CatInfo } from "../DataSource/RadarDataSource";
-import { nestedAssign } from "../utils";
-import { RadarItem } from "./RadarPie";
+import { create, select } from "d3-selection";
+import { scaleSequential, scaleOrdinal } from "d3-scale";
+import { interpolateTurbo, schemeSet1 } from "d3-scale-chromatic";
+import { symbol, symbolTriangle } from "d3-shape";
+import { NameSpaced } from "../D3Element.js";
+import { CatInfo } from "../DataSource/RadarDataSource.js";
+import { nestedAssign } from "../utils.js";
+import { RadarItem } from "./RadarPie.js";
 
 export type ItemMarkerConfig = {
   size: number;
@@ -19,12 +22,12 @@ type ColorScaleFunc = d3.ScaleSequential<string, never> | d3.ScaleOrdinal<number
 // used to create itemMarker object when no itemMarker provided in constructor
 export const DEFAULT_ITEM_MARKER_CONFIG: ItemMarkerConfig = {
   size: 80,
-  symbolType: d3.symbolTriangle,
+  symbolType: symbolTriangle,
   colorScheme: {
     // when no. of groups is less
-    categorical: [...d3.schemeSet1], // schemeSet1 schemeTableau10 schemePaired etc: https://github.com/d3/d3-scale-chromatic#categorical
+    categorical: [...schemeSet1], // schemeSet1 schemeTableau10 schemePaired etc: https://github.com/d3/d3-scale-chromatic#categorical
     // when no. of groups is more than available in the categorical scheme
-    diverging: d3.interpolateTurbo, //  interpolateTurbo interpolateWarm interpolateRainbow interpolateSinebow https://github.com/d3/d3-scale-chromatic#diverging
+    diverging: interpolateTurbo, //  interpolateTurbo interpolateWarm interpolateRainbow interpolateSinebow https://github.com/d3/d3-scale-chromatic#diverging
   },
   toolTipOpacity: 0.9,
 };
@@ -41,15 +44,15 @@ export class ItemMarker extends NameSpaced {
 
     this.config = nestedAssign(DEFAULT_ITEM_MARKER_CONFIG, config);
 
-    this.symbol = d3.symbol().type(this.config.symbolType).size(this.config.size);
+    this.symbol = symbol().type(this.config.symbolType).size(this.config.size);
 
     // Fill Colors of markers per group.
     if (this.groups.length <= this.config.colorScheme.categorical.length) {
       //   when we have enough categorical
-      this.groupColorScale = d3.scaleOrdinal([0, this.groups.length], this.config.colorScheme.categorical);
+      this.groupColorScale = scaleOrdinal([0, this.groups.length], this.config.colorScheme.categorical);
     } else {
       // otherwise interpolation to diverging scale
-      this.groupColorScale = d3.scaleSequential([0, this.groups.length], this.config.colorScheme.diverging);
+      this.groupColorScale = scaleSequential([0, this.groups.length], this.config.colorScheme.diverging);
     }
   }
 
@@ -65,8 +68,7 @@ export class ItemMarker extends NameSpaced {
       groupIdx = group;
     }
 
-    const el = d3
-      .create(this.namespace + "path")
+    const el = create(this.namespace + "path")
       .attr("d", this.symbol)
       .classed("radar-item-symbol", true)
       .classed("radar-item-symbol-group-" + groupIdx, true)
@@ -77,9 +79,9 @@ export class ItemMarker extends NameSpaced {
 
   public getMultipleElements(items: RadarItem[]) {
     // TODO: this group is redundant is svg structure, remove it.
-    const markersGroup = d3.create(this.namespace + "g").classed("item-markers", true);
+    const markersGroup = create(this.namespace + "g").classed("item-markers", true);
 
-    const toolTipEl = d3.select("#myRadar-tooltip");
+    const toolTipEl = select("#myRadar-tooltip");
 
     markersGroup
       .selectAll("g")
