@@ -1,7 +1,7 @@
 {
     "name": "roadmap-radar-chart",
     "description": "A radar chart to generate an overview of your roadmap or tech radar.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "repository": {
         "type": "git",
         "url": "https://github.com/szerintedmi/RadarChart.git"
