@@ -43,7 +43,7 @@ jobs:
         run: yarn --prefer-offline
 
       - name: Build
-        run: yarn build:production
+        run: yarn build:publish
 
       - name: NPM publish
         run: yarn publish
