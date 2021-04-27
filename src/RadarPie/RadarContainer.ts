@@ -1,11 +1,12 @@
-import * as d3 from "d3";
-import { RadarContentProcessed, RadarDataSource } from "../DataSource/RadarDataSource";
-import { RadarError } from "../Errors";
-import { nestedAssign, RecursivePartial } from "../utils";
-import { arrangeLabels } from "./arrangeLabels";
-import { ItemLegend, ItemLegendConfig } from "./ItemLegend";
-import { RadarPie, RadarPieConfig } from "./RadarPie";
-import { RingLegend, RingLegendConfig } from "./RingLegend";
+import "d3-transition"; // required otherwise d3.select(..).transition won't work
+import { select } from "d3-selection";
+import { RadarContentProcessed, RadarDataSource } from "../DataSource/RadarDataSource.js";
+import { RadarError } from "../Errors.js";
+import { nestedAssign, RecursivePartial } from "../utils.js";
+import { arrangeLabels } from "./arrangeLabels.js";
+import { ItemLegend, ItemLegendConfig } from "./ItemLegend.js";
+import { RadarPie, RadarPieConfig } from "./RadarPie.js";
+import { RingLegend, RingLegendConfig } from "./RingLegend.js";
 
 export type ContainerConfig = {
   width: number;
@@ -61,7 +62,7 @@ export class RadarContainer {
     this.config.ringLegend = nestedAssign(defaultRingLegend, this.config.ringLegend);
   }
 
-  public async fetchData(dataSource: RadarDataSource) {
+  public async fetchData(dataSource: RadarDataSource): Promise<RadarContentProcessed> {
     this.dataSource = dataSource;
 
     await this.dataSource.fetchData();
@@ -70,7 +71,12 @@ export class RadarContainer {
     return this.radarContent;
   }
 
-  public async appendTo(svgElement: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>) {
+  public async appendTo(element: HTMLElement) {
+    const svgElement = select(element)
+      .append("svg")
+      .classed("radar-svg-container", true)
+      .attr("viewBox", `0 0 ${this.config.container.width} ${this.config.container.height}`);
+
     if (!this.dataSource && !this.radarContent) throw new RadarError("Call fetchData before calling getElement");
 
     const radarContainerGroup = svgElement
@@ -79,7 +85,7 @@ export class RadarContainer {
       .attr("transform", `translate (${this.config.container.center.x} ${this.config.container.center.y})`);
 
     this.radarPie = new RadarPie(this.radarContent, this.config.pie);
-    const radarPieEl = radarContainerGroup.append(() => this.radarPie.getElement().node());
+    radarContainerGroup.append(() => this.radarPie.getElement().node());
 
     this.itemLegend = new ItemLegend(this.radarContent.groups, this.radarPie.itemMarker, this.config.itemLegend);
     radarContainerGroup.append(() => this.itemLegend.getElement().node());
@@ -100,7 +106,7 @@ export class RadarContainer {
   }
 
   static scaleToFit(
-    el: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+    el: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
     newWidth: number,
     newHeight: number,
     padding: number

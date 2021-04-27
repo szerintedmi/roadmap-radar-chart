@@ -1,10 +1,10 @@
-import * as d3 from "d3";
-import { Force } from "d3";
-import { RadarError } from "../Errors";
-import { transformElementPoint } from "../geometricUtils";
-import { ItemLegendConfig } from "./ItemLegend";
-import { Slice, SubSlice } from "./RadarPie";
-import { rectForceCollide } from "./rectForceCollide";
+import { select } from "d3-selection";
+import { forceSimulation, Force, forceLink, forceX } from "d3-force";
+import { RadarError } from "../Errors.js";
+import { transformElementPoint } from "../geometricUtils.js";
+import { ItemLegendConfig } from "./ItemLegend.js";
+import { Slice, SubSlice } from "./RadarPie.js";
+import { rectForceCollide } from "./rectForceCollide.js";
 
 export interface BBoxRect {
   x: number;
@@ -53,20 +53,17 @@ export function arrangeLabels(
     > = containerEl.selectAll(".label, .item-legend-group, .ring-legend-group");
 
     elementsToArrange.each((d, i, g) => {
-      const el = d3.select(g[i]);
+      const el = select(g[i]);
       const elNode = el.node();
 
       const bBox = elNode.getBBox();
 
       let padding: number;
 
-      let label: string;
       if ("labelData" in d) {
         padding = d.labelData.bBoxPadding;
-        label = d.label;
       } else if ("bBoxPadding" in d) {
         padding = d.bBoxPadding;
-        label = "";
       } else {
         throw new RadarError("Invalid element data in arrangeLabels:\n" + JSON.stringify(d));
       }
@@ -143,25 +140,24 @@ export function arrangeLabels(
 
     const simLinks = bBoxes.map((node, idx) => ({ source: idx, target: idx + bBoxes.length }));
 
-    const simulation = d3
-      .forceSimulation(simNodes)
+    const simulation = forceSimulation(simNodes)
       .alphaDecay(0.2)
-      .force("link", d3.forceLink(simLinks).distance(0).strength(1))
+      .force("link", forceLink(simLinks).distance(0).strength(1))
       .force(
         "collide",
         isolate(rectForceCollide(), (d) => !d.isAnchor)
       )
       .force(
-        "forceYRight",
+        "forceXRight",
         isolate(
-          d3.forceX(containerBBox.x + containerBBox.width).strength(0.1),
+          forceX(containerBBox.x + containerBBox.width).strength(0.1),
           (d) => d.x > 0 && !d.isAnchor && !(d as LabelBoxedData).isSubLabel
         )
       )
       .force(
-        "forceYLeft",
+        "forceXLeft",
         isolate(
-          d3.forceX(containerBBox.x).strength(0.1),
+          forceX(containerBBox.x).strength(0.1),
           (d) => d.x < 0 && !d.isAnchor && !(d as LabelBoxedData).isSubLabel
         )
       );

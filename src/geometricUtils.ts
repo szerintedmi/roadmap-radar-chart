@@ -5,11 +5,11 @@
 import SVGPath from "svgpath";
 import AdaptiveLinearization from "adaptive-linearization";
 import * as geometric from "geometric";
-import * as d3 from "d3";
+import { polygonArea, polygonContains } from "d3-polygon";
 
 // new SVG interface polyfill required for SVGPathElement.getPathData()  https://svgwg.org/specs/paths/#InterfaceSVGPathData
 import "path-data-polyfill";
-import { RadarError } from "./Errors";
+import { RadarError } from "./Errors.js";
 
 export type Point = [number, number];
 
@@ -240,10 +240,10 @@ export function distributePointsWithinBoundary(boundaryPolygonPoints: Point[], p
 
     throw new RadarError(errorText);
   }
-  const polygonArea = Math.abs(d3.polygonArea(boundaryPolygonPoints));
+  const area = Math.abs(polygonArea(boundaryPolygonPoints));
   const polygonPathString = pointsToPathString(boundaryPolygonPoints);
 
-  const boxToPolyAreaRatio = bBox.area / polygonArea;
+  const boxToPolyAreaRatio = bBox.area / area;
 
   let minPoints = Math.floor(boxToPolyAreaRatio * pointsCount * POINT_DENSITY);
   let pointsInside = spreadPoints(boundaryPolygonPoints, polygonPathString, bBox, minPoints);
@@ -299,7 +299,7 @@ function spreadPoints(boundaryPolygonPoints: Point[], polygonPathString: string,
         xSpacing / 2 + col * xSpacing + bBox.topLeft[0],
         ySpacing / 2 + row * ySpacing + bBox.topLeft[1],
       ];
-      if (d3.polygonContains(boundaryPolygonPoints, point)) {
+      if (polygonContains(boundaryPolygonPoints, point)) {
         pointsInside.push({ point, distance: -getClosestPointOnPath(polygonPathString, point).distance });
       }
     }

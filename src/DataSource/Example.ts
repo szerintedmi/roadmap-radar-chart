@@ -1,9 +1,9 @@
-import { DsvDataSource, DsvFileUris } from "./DsvDataSource";
-import { RadarError } from "../Errors";
-import { JSONDataSource } from "./JSONDataSource";
-import { SingleDsvDataSource } from "./SingleDsvDataSource";
-import { RadarConfig } from "../RadarPie/RadarContainer";
-import { RecursivePartial } from "../utils";
+import { DsvDataSource, DsvFileUris } from "./DsvDataSource.js";
+import { RadarError } from "../Errors.js";
+import { JSONDataSource } from "./JSONDataSource.js";
+import { SingleDsvDataSource } from "./SingleDsvDataSource.js";
+import { RadarConfig } from "../RadarPie/RadarContainer.js";
+import { RecursivePartial } from "../utils.js";
 
 type exampleBase = {
   type: "dsv" | "json" | "singleDsv";
@@ -46,9 +46,9 @@ export class Example {
       separator: ",",
       fileUris: {
         slices: "./exampleData/NowNextLater 1/NowNextLater 1 - slices.csv",
-        subSlices: "exampleData/NowNextLater 1/NowNextLater 1 - subSlices.csv",
-        rings: "exampleData/NowNextLater 1/NowNextLater 1 - rings.csv",
-        items: "exampleData/NowNextLater 1/NowNextLater 1 - items.csv",
+        subSlices: "./exampleData/NowNextLater 1/NowNextLater 1 - subSlices.csv",
+        rings: "./exampleData/NowNextLater 1/NowNextLater 1 - rings.csv",
+        items: "./exampleData/NowNextLater 1/NowNextLater 1 - items.csv",
       },
     },
 
@@ -58,9 +58,9 @@ export class Example {
       separator: ",",
       fileUris: {
         slices: "./exampleData/Confidential/slices.csv",
-        subSlices: "exampleData/Confidential/subSlices.csv",
-        rings: "exampleData/Confidential/rings.csv",
-        items: "exampleData/Confidential/items.csv",
+        subSlices: "./exampleData/Confidential/subSlices.csv",
+        rings: "./exampleData/Confidential/rings.csv",
+        items: "./exampleData/Confidential/items.csv",
       },
       radarConfig: {
         pie: { minSubSliceAngle: 12 },

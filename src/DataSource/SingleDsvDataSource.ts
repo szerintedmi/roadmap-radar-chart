@@ -1,6 +1,13 @@
-import { dsvFormat } from "d3";
-import { DataImportError, RadarError } from "../Errors";
-import { RadarDataSource, RadarInput, RadarItemInput, RingInput, SliceInput, SubSliceInput } from "./RadarDataSource";
+import { dsvFormat } from "d3-dsv";
+import { DataImportError, RadarError } from "../Errors.js";
+import {
+  RadarDataSource,
+  RadarInput,
+  RadarItemInput,
+  RingInput,
+  SliceInput,
+  SubSliceInput,
+} from "./RadarDataSource.js";
 
 type singleDSVInputRecord = {
   slice: string;
@@ -15,7 +22,7 @@ export class SingleDsvDataSource extends RadarDataSource {
   fileURI: string;
   delimiter: string;
 
-  constructor(fileURI: string, delimiter: string = ",") {
+  constructor(fileURI: string, delimiter = ",") {
     super();
     this.fileURI = fileURI;
     this.delimiter = delimiter;

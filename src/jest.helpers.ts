@@ -7,6 +7,7 @@ export const expectToThrowMuteErrorLog = (func: () => unknown, error?: JestToErr
   // Even though the error is caught, it still gets printed to the console
   // so we mock that out to avoid the wall of red text.
   const spy = jest.spyOn(console, "error");
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   spy.mockImplementation(() => {});
 
   expect(func).toThrow(error);

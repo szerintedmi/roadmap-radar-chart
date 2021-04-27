@@ -41,7 +41,7 @@ async function waitForEvent(page, eventName, seconds = 5) {
   return Promise.race([
     // add event listener and wait for event to fire before returning
     page.evaluate((eventName) => {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         document.addEventListener(eventName, (event) => {
           resolve(event); // resolves when the event fires
         });
