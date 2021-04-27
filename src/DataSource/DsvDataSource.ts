@@ -1,6 +1,6 @@
-import { dsvFormat } from "d3";
-import { DataImportError, RadarError } from "../Errors";
-import { RadarDataSource, RadarInput, SliceInput } from "./RadarDataSource";
+import { dsvFormat } from "d3-dsv";
+import { DataImportError, RadarError } from "../Errors.js";
+import { RadarDataSource, RadarInput, SliceInput } from "./RadarDataSource.js";
 
 export type DsvFileUris = {
   slices: string;
@@ -20,7 +20,7 @@ export class DsvDataSource extends RadarDataSource {
   fileURIs: DsvFileUris;
   delimiter: string;
 
-  constructor(fileURIs: DsvFileUris, delimiter: string = ",") {
+  constructor(fileURIs: DsvFileUris, delimiter = ",") {
     super();
     this.fileURIs = fileURIs;
     this.delimiter = delimiter;

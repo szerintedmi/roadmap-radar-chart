@@ -3,4 +3,6 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["./src/jest.svgDom.ts"],
+  testPathIgnorePatterns: ["<rootDir>/dist/", "<rootDir>/node_modules/"],
+  resolver: "ts-jest-resolver", // https://github.com/kulshekhar/ts-jest/issues/1057
 };

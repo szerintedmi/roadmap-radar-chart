@@ -5,8 +5,7 @@
 // http://bl.ocks.org/natebates/273b99ddf86e2e2e58ff
 //////////////
 
-import * as d3 from "d3";
-
+import { quadtree } from "d3-quadtree";
 type Rect = { x: number; y: number; width: number; height: number };
 
 /**
@@ -22,11 +21,11 @@ type Rect = { x: number; y: number; width: number; height: number };
  * @param {(node: any) => boolean} [nodesFilter=() => true]
  * @returns
  */
-export function rectForceCollide(collidePadding: number = 10) {
+export function rectForceCollide(collidePadding = 10) {
   let nodes: Rect[];
 
   function force(alpha: number) {
-    const quad = d3.quadtree(
+    const quad = quadtree(
       nodes,
       (d) => d.x,
       (d) => d.y

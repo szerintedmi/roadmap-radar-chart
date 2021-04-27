@@ -1,5 +1,5 @@
-import { DataImportError } from "../Errors";
-import { RadarDataSource, RadarInput } from "./RadarDataSource";
+import { DataImportError } from "../Errors.js";
+import { RadarDataSource, RadarInput } from "./RadarDataSource.js";
 
 // Useful tool to cleanse manually created JSONs: https://jsonformatter.curiousconcept.com/#
 

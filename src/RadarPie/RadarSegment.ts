@@ -2,13 +2,13 @@
 //     - make padding size params (SYMBOL_BOUND_RADIUS) dependent on marker size
 //   *  - generic container polygon offsetting (padding / shrinking )
 //             instead of tampering with arc params):  polygon-offset package buggy. what else?
+import { create } from "d3-selection";
+import { arc } from "d3-shape";
+import { D3Element } from "../D3Element.js";
 
-import * as d3 from "d3";
-import { D3Element } from "../D3Element";
-
-import { distributePointsWithinBoundary, flattenSVGPath, Point } from "../geometricUtils";
-import { ItemMarker } from "./ItemMarker";
-import { RingInfo, Segment } from "./RadarPie";
+import { distributePointsWithinBoundary, flattenSVGPath, Point } from "../geometricUtils.js";
+import { ItemMarker } from "./ItemMarker.js";
+import { RingInfo, Segment } from "./RadarPie.js";
 
 const SYMBOL_BOUND_RADIUS = 6;
 const PADDING_ANGLE = (3 * Math.PI) / 180;
@@ -34,7 +34,7 @@ export class RadarSegment extends D3Element {
 
     this.opacity = rings[this.segment.ringLevel].opacity;
 
-    const arcGenerator = d3.arc();
+    const arcGenerator = arc();
     this.arcPathString = arcGenerator(this.segment.arcParams);
     this.arcCentroid = arcGenerator.centroid(this.segment.arcParams);
 
@@ -60,8 +60,7 @@ export class RadarSegment extends D3Element {
   } // constructor end
 
   getElement() {
-    const segmentGroup = d3
-      .create(this.namespace + "g")
+    const segmentGroup = create(this.namespace + "g")
       .classed("radar-segment-group", true)
       .classed("radar-segment-group-level-" + this.segment.ringLevel, true);
 
@@ -83,7 +82,7 @@ export class RadarSegment extends D3Element {
     padInnerRadius: number,
     padOuterRadius: number
   ) {
-    const arcGenerator = d3.arc();
+    const arcGenerator = arc();
 
     const arcPathString = arcGenerator(arcParams);
     const paddedArcParams = {
@@ -103,7 +102,7 @@ export class RadarSegment extends D3Element {
   // Debug displays
   ////////////////////////////////////////////////////////////////////////////////////////////////
   getDebugElement() {
-    const debugGroup = d3.create(this.namespace + "g").classed("radar-segment-debug", true);
+    const debugGroup = create(this.namespace + "g").classed("radar-segment-debug", true);
 
     // item dots
     debugGroup

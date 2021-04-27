@@ -1,8 +1,8 @@
-import * as d3 from "d3";
-import { ItemMarker } from "./ItemMarker";
-import { CatInfo } from "../DataSource/RadarDataSource";
-import { D3Element } from "../D3Element";
-import { nestedAssign, RecursivePartial } from "../utils";
+import { create } from "d3-selection";
+import { ItemMarker } from "./ItemMarker.js";
+import { CatInfo } from "../DataSource/RadarDataSource.js";
+import { D3Element } from "../D3Element.js";
+import { nestedAssign, RecursivePartial } from "../utils.js";
 
 export type ItemLegendConfig = {
   pos: {
@@ -36,8 +36,7 @@ export class ItemLegend extends D3Element {
   }
 
   public getElement() {
-    const legendGroup = d3
-      .create(this.namespace + "svg")
+    const legendGroup = create(this.namespace + "svg")
       .style("overflow", "visible")
       .datum(this.config)
       .classed("item-legend-group", true)
