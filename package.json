@@ -95,5 +95,8 @@
         "webpack-dev-server": "3.11.2",
         "webpack-merge": "5.7.3",
         "webpack-stats-plugin": "1.0.3"
-    }
+    },
+    "files": [
+        "dist/"
+    ]
 }
