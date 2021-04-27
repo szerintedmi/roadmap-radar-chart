@@ -1,4 +1,4 @@
-import { InputDataValidationErrors, RadarError } from "../Errors";
+import { InputDataValidationErrors, RadarError } from "../Errors.js";
 
 ///////////////////////////////////////////////////////////////////////////////
 // Input Data format, see more explanation on RadarDataSource class

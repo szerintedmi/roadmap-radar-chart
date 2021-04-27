@@ -13,12 +13,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: main
-        
+
+      - name: Check if it's already published
         uses: flood-io/is-published-on-npm@v1
         id: is-published
 
       - name: Fail if already published
-        if: ${{ steps.is-published.outputs.published == 'false' }}
+        if: ${{ steps.is-published.outputs.published == 'true' }}
         run: exit 1
 
       - name: Setup Node.js
@@ -47,4 +48,4 @@ jobs:
       - name: NPM publish
         run: yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

@@ -5,6 +5,7 @@
 // https://github.com/facebook/jest/issues/5379#issuecomment-360044161
 //  https://github.com/chromaui/chromatic-cli/pull/52
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore, https://github.com/svgdotjs/svgdom/issues/69
 import { createSVGWindow } from "svgdom";
 const window = createSVGWindow();

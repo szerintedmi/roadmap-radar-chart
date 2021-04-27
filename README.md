@@ -94,33 +94,51 @@ If you want the rings to have equal sizes then set `minRingRadius` to a number w
 
 For more details (eg. `RadarConfig` tips, error handling etc.) see [index.ts](src/index.ts)
 
+```bash
+yarn add roadmap-radar-chart
+```
+
 ```ts
-import "./style.css";
-import * as d3 from "d3";
+import "roadmap-radar-chart/style.css";
+import { SingleDsvDataSource, RadarContainer } from "roadmap-radar-chart";
 
-const svg = d3
-  .select("#myRadar-div")
-  .append("svg")
-  .classed("radar-svg-container", true)
-  .attr("viewBox", `0 0 900 500`);
+const CSV_URI =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMgk767I1gWr1F1bmI2XMttvPa1TyXcdd910BSfQZjqIvOHA_aE_ESnAhftTmjnJ-KL5uwPr-LIRYJ/pub?output=csv";
+const svgDiv = document.getElementById("myRadar-div");
 
 //////////////////////////////////////////////////////////////////////////
-// Setup data source. You can pass an external URL of a CSV file as well
-const radarDs = new SingleDsvDataSource("./exampleData/TW_TechRadar_Vol23.csv");
+// Setup data source.
+const radarDs = new SingleDsvDataSource(CSV_URI);
 
 //////////////////////////////////////////////////////////////////////////
-// Creating the chart with default configs.
-//      Customize it by passing a RadarConfig object
+// Creating the chart with default configs. Customize it by passing a RadarConfig object
 const radarContainer = new RadarContainer();
 
 //////////////////////////////////////////////////////////////////////////
 // Fetch data and append it to svg
 radarContainer.fetchData(radarDs).then(() => {
-  radarContainer.appendTo(svg);
+  radarContainer.appendTo(svgDiv);
 });
 ```
 
-_Note: an npm module is coming..._
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Roadmap Radar</title>
+  </head>
+
+  <body>
+    <div class="error-div"></div>
+    <div id="myRadar-div" class="radar-div"></div>
+    <div id="myRadar-tooltip" class="radar-tooltip"></div>
+  </body>
+</html>
+```
 
 ## License
 
