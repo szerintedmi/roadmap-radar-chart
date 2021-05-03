@@ -10297,10 +10297,10 @@ webpack-stats-plugin@1.0.3:
   resolved "https://registry.yarnpkg.com/webpack-stats-plugin/-/webpack-stats-plugin-1.0.3.tgz#0f64551a0b984b48a9e7acdee32e3cfda556fe51"
   integrity sha512-tV/SQHl6lKfBahJcNDmz8JG1rpWPB9NEDQSMIoL74oVAotdxYljpgIsgLzgc1N9QrtA9KEA0moJVwQtNZv2aDA==
 
-webpack@5.36.0:
-  version "5.36.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.36.0.tgz#d008da31b721f8fecce88ef2adaf1b16dc2161d1"
-  integrity sha512-HdOhLXClUEwTnzQnzpSG9iL00ej23ojvfnGpF49ba0MkuAT2q+WhQilHFFJHOIVRBqbzakQ1vCWQV2K+QLX0Qw==
+webpack@5.36.2:
+  version "5.36.2"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.36.2.tgz#6ef1fb2453ad52faa61e78d486d353d07cca8a0f"
+  integrity sha512-XJumVnnGoH2dV+Pk1VwgY4YT6AiMKpVoudUFCNOXMIVrEKPUgEwdIfWPjIuGLESAiS8EdIHX5+TiJz/5JccmRg==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.47"
