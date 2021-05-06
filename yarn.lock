@@ -9786,10 +9786,10 @@ ts-jest-resolver@1.0.0:
   resolved "https://registry.yarnpkg.com/ts-jest-resolver/-/ts-jest-resolver-1.0.0.tgz#41284f438f0326c3eb8d849d9b029a5b12372d0c"
   integrity sha512-wslutj2/i8M2gsCd2Vt3xemFp0z94LKBEgQdIC4zf2xCirll7vZltuvmVlJW6tuLkE5SPKDELw6G5oQnQSPZOw==
 
-ts-jest@26.5.5:
-  version "26.5.5"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.5.tgz#e40481b6ee4dd162626ba481a2be05fa57160ea5"
-  integrity sha512-7tP4m+silwt1NHqzNRAPjW1BswnAhopTdc2K3HEkRZjF0ZG2F/e/ypVH0xiZIMfItFtD3CX0XFbwPzp9fIEUVg==
+ts-jest@26.5.6:
+  version "26.5.6"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.6.tgz#c32e0746425274e1dfe333f43cd3c800e014ec35"
+  integrity sha512-rua+rCP8DxpA8b4DQD/6X2HQS8Zy/xzViVYfEs2OQu68tkCuKLV0Md8pmX55+W24uRIyAsf/BajRfxOs+R2MKA==
   dependencies:
     bs-logger "0.x"
     buffer-from "1.x"

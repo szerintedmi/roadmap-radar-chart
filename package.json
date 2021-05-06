@@ -86,7 +86,7 @@
         "jest": "26.6.3",
         "style-loader": "2.0.0",
         "svgdom": "0.1.8",
-        "ts-jest": "26.5.5",
+        "ts-jest": "26.5.6",
         "ts-jest-resolver": "1.0.0",
         "tsc-watch": "4.2.9",
         "wait-on": "5.3.0",
