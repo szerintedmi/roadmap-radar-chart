@@ -90,7 +90,7 @@
         "ts-jest-resolver": "1.0.0",
         "tsc-watch": "4.2.9",
         "wait-on": "5.3.0",
-        "webpack": "5.36.0",
+        "webpack": "5.69.1",
         "webpack-cli": "4.6.0",
         "webpack-dev-server": "3.11.2",
         "webpack-merge": "5.7.3",
