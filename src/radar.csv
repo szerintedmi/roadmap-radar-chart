@@ -1,0 +1,12 @@
+slice,subSlice,ring,group,label,description
+Slice 1,,ring 1,group 1,item 1,"rings will appear in the order listed here, starting from inside the circle. ie. first ring appearing here will be the innermost"
+Slice 2,,ring 2,group 2,item 2,subSlice is optional.
+Slice 3,,ring 3,group 1,item 3,Description will appear in the toolt tip on hover over the item. It's optional.
+Slice 4,,ring 1,group 2,item 4,"<p>You can use a limited set of html codes in your description</p><p>Eg. have <strong>bold texts</strong> or even <a href=""http://hmpg.net/"">links</a>. Altough it's hard to click on the links in the tootlip at the moment as it disappears when you move you pointer. It's on the todo list to fix</p>"
+Slice 5,,ring 1,group 2,item 5,
+Slice 5,Sub slice 1,ring 1,group 2,item 6,
+Slice 5,Sub slice 1,ring 1,group 2,item 7,
+Slice 5,Sub slice 2,ring 2,group 1,item 8,
+Slice 7,Sub slice 3,ring 3,group 2,item 9,
+Slice 8,Sub slice 4,ring 1,group 1,item 10,
+Slice 8,Sub slice 2,ring 1,group 1,item 11,There can be subSlices with same name under different slices

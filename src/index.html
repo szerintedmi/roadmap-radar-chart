@@ -2,13 +2,27 @@
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roadmap Radar</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
   </head>
 
   <body>
+    <script src="csvParser.js"></script>
+    <script type="module">
+
+      import { RadarContainer } from './RadarPie/RadarContainer.js';
+
+      const svgDiv = document.getElementById("myRadar-div");
+
+      // Load the CSV data
+      const data = await init("radar.csv");
+      const radarContainer = new RadarContainer(data);
+      radarContainer.appendTo(svgDiv)
+
+    </script>
     <div class="error-div"></div>
     <div id="myRadar-div" class="radar-div"></div>
     <div id="myRadar-tooltip" class="radar-tooltip"></div>
