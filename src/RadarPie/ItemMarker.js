@@ -56,6 +56,7 @@ export class ItemMarker extends NameSpaced {
     // TODO: this group is redundant is svg structure, remove it.
     const markersGroup = d3.create(this.namespace + "g").classed("item-markers", true);
     const toolTipEl = d3.select("#myRadar-tooltip");
+    const hideTooltipTimeout = {};
 
     markersGroup
       .selectAll("g")
@@ -63,10 +64,14 @@ export class ItemMarker extends NameSpaced {
       .enter()
       .append((d) => this.getElement(d.groupName).node())
       .attr("transform", (d) => `translate(${d.x},${d.y})`)
-
-      ////////////////////////////////////////////////////////
-      // Tooltip
       .on("mouseover", (event, d) => {
+        clearTimeout(hideTooltipTimeout[d.id]);
+
+        // Hide any previous tooltips
+        toolTipEl
+          .style("opacity", 0)
+          .style("visibility", "hidden");
+
         // toolTipEl.html(`<p>${d.groupName} ${d.sliceId} ${d.subSliceId} ${d.ringId} ${d.id}</p> <p>${d.label}</p>`);
         toolTipEl.html(
           `<span class="item-tooltip-label">${d.label}</span>` +
@@ -74,8 +79,7 @@ export class ItemMarker extends NameSpaced {
             `<span class="item-tooltip-ring">${d.ringId}</span>` +
             `<span class="item-tooltip-description"> ${d.description} </span>`
         );
-        // .render();
-        // console.log("window", window.innerWidth, toolTipEl.node().getBoundingClientRect());
+
         toolTipEl
           .style("left", event.x + 10 + "px")
           .style("top", event.y - 28 + "px")
@@ -84,10 +88,30 @@ export class ItemMarker extends NameSpaced {
           .duration(200)
           .style("opacity", this.config.toolTipOpacity)
           .style("visibility", "visible");
+
+        toolTipEl
+          .on("mouseover", () => {
+            clearTimeout(hideTooltipTimeout[d.id]);
+          })
+          .on("mouseleave", () => {
+            hideTooltip(d.id);
+          });
       })
       .on("mouseleave", (e, d) => {
-        toolTipEl.transition().duration(200).style("opacity", 0).transition().delay(200).style("visibility", "hidden");
+        hideTooltip(d.id);
       });
+
+    function hideTooltip(itemId) {
+      hideTooltipTimeout[itemId] = setTimeout(() => {
+        toolTipEl
+          .transition()
+          .duration(200)
+          .style("opacity", 0)
+          .transition()
+          .delay(200)
+          .style("visibility", "hidden");
+      }, 300);
+    }
 
     return markersGroup;
   }
