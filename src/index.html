@@ -12,14 +12,17 @@
   <body>
     <script type="module">
 
-      import { RadarContainer, init } from './RadarPie/RadarContainer.js';
+      import('./RadarPie/RadarPie.min.js')
+      .catch(() => import('./RadarPie/RadarContainer.js'))
+      .then((module) => {
+        const svgDiv = document.getElementById("myRadar-div");
 
-      const svgDiv = document.getElementById("myRadar-div");
-
-      // Load the CSV data
-      const data = await init("radar.csv");
-      const radarContainer = new RadarContainer(data);
-      radarContainer.appendTo(svgDiv);
+        // Load the CSV data
+        module.init("radar.csv").then((data) => {
+          const radarContainer = new module.RadarContainer(data);
+          radarContainer.appendTo(svgDiv);
+        });
+      });
 
     </script>
     <div class="error-div"></div>
