@@ -10,17 +10,16 @@
   </head>
 
   <body>
-    <script src="csvParser.js"></script>
     <script type="module">
 
-      import { RadarContainer } from './RadarPie/RadarContainer.js';
+      import { RadarContainer, init } from './RadarPie/RadarContainer.js';
 
       const svgDiv = document.getElementById("myRadar-div");
 
       // Load the CSV data
       const data = await init("radar.csv");
       const radarContainer = new RadarContainer(data);
-      radarContainer.appendTo(svgDiv)
+      radarContainer.appendTo(svgDiv);
 
     </script>
     <div class="error-div"></div>

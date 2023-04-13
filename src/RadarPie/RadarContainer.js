@@ -4,6 +4,8 @@ import { ItemLegend } from "./ItemLegend.js";
 import { RadarPie } from "./RadarPie.js";
 import { RingLegend } from "./RingLegend.js";
 
+export { init } from "./csvParser.js"
+
 const DEFAULT_CONTAINER_CONFIG = {
   width: 900,
   height: 500,

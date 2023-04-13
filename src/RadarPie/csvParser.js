@@ -1,5 +1,5 @@
 
-function init(csvfile) {
+export function init(csvfile) {
   const inputData = d3.csv(csvfile).then(data => {
     const uniqueSlices = [...new Set(data.map((it) => it.slice))].map((slice) => ({ id: slice }));
     const items = data.map((it, idx) => ({
