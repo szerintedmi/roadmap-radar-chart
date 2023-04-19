@@ -1,0 +1,8 @@
+site_name: Roadmap radar chart
+theme:
+  name: material
+nav:
+  - 'Home': 'index.md'
+  - 'Roadmap': 'roadmap.md'
+extra_css:
+  - style.css
