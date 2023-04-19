@@ -12,13 +12,25 @@
   <body>
     <script type="module">
 
+      function getFilename() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let filename = urlParams.get("filename");
+        if (filename === null) {
+          filename = "roadmap.csv";
+        }
+        return filename;
+      }
+
       import('./RadarPie/RadarPie.min.js')
       .catch(() => import('./RadarPie/RadarContainer.js'))
       .then((module) => {
         const svgDiv = document.getElementById("myRadar-div");
 
+        // Get CSV data to load
+        const filename = getFilename();
+
         // Load the CSV data
-        module.init("radar.csv").then((data) => {
+        module.init(filename).then((data) => {
           const radarContainer = new module.RadarContainer(data);
           radarContainer.appendTo(svgDiv);
         });
